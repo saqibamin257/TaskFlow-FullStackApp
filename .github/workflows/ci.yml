@@ -44,10 +44,10 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          cd TaskFlow.UI
+          cd taskflow-ui
           npm install
 
       - name: Build
         run: |
-          cd TaskFlow.UI
+          cd taskflow-ui
           npm run build
