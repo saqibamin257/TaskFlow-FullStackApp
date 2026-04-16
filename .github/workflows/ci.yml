@@ -1,0 +1,53 @@
+name: FullStack CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-backend:
+    name: Build .NET API
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore Dependencies
+        run: dotnet restore TaskFlow.sln
+
+      - name: Build
+        run: dotnet build TaskFlow.sln --no-restore --configuration Release
+
+      - name: Test
+        run: dotnet test TaskFlow.sln --no-build --verbosity normal
+
+  build-frontend:
+    name: Build React App
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: |
+          cd TaskFlow.UI
+          npm install
+
+      - name: Build
+        run: |
+          cd TaskFlow.UI
+          npm run build
