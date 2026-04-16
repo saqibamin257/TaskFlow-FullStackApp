@@ -1,4 +1,4 @@
-import { UserList } from "./features/users/userList";
+import { UserList } from "./features/users/UserList";
 
 function App() {
   return (
