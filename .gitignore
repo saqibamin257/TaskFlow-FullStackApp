@@ -1,0 +1,14 @@
+# .NET
+bin/
+obj/
+
+# Node
+node_modules/
+dist/
+
+# Env
+.env
+
+# IDE
+.vs/
+.vscode/
