@@ -1,13 +1,11 @@
-import type { UserDTO } from "../types/user";
-import { getUsers } from "../services/userService";
-import { useState, useEffect } from "react";
+import { useUsers } from "../hooks/useUsers";
+
 
 export const UserList = () => {
-  const [users, setUsers] = useState<UserDTO[]>([]);
+  const { users, loading, error } = useUsers();
 
-  useEffect(() => {
-    getUsers().then(setUsers);
-  }, []);
+  if (loading) return <p>Loading users...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
     <div>
