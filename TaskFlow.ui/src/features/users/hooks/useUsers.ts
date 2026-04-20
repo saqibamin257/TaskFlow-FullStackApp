@@ -1,25 +1,15 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getUsers } from "../services/userService";
 import type { UserDTO } from "../types/user";
 
 export const useUsers = () => {
-  const [users, setUsers] = useState<UserDTO[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  return useQuery<UserDTO[], Error>({
+    queryKey: ["users"],
+    queryFn: getUsers,
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const data = await getUsers();
-        setUsers(data);
-      } catch (err) {
-        setError("Failed to fetch users");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUsers();
-  }, []);
-
-  return { users, loading, error };
+    // Production configs
+    staleTime: 1000 * 60, // 1 minute (cache freshness)
+    retry: 2, // retry failed requests
+    refetchOnWindowFocus: false, // avoid unnecessary refetch
+  });
 };
