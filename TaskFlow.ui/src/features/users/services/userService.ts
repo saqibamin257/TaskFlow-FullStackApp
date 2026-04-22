@@ -12,3 +12,12 @@ export const createUser = async (
   const resposne = await apiClient.post("user", user);
   return resposne.data;
 };
+
+export const updateUser = async (user: UserDTO): Promise<UserDTO> => {
+  const resposne = await apiClient.put(`/user/${user.id}`, user);
+  return resposne.data;
+};
+
+export const deleteUser = async (id: number): Promise<void> => {
+  await apiClient.delete(`/user/${id}`);
+};

@@ -36,7 +36,7 @@ namespace TaskFlow.Api.Controllers
             userList.Add(user);
             return Ok(user);
         }
-        [HttpPut]
+        [HttpPut("{id}")]
         public ActionResult Put(int id, UserDTO updatedUser) 
         {
             var user = userList.FirstOrDefault(u => u.Id == id);
@@ -48,6 +48,17 @@ namespace TaskFlow.Api.Controllers
                 user.Name = updatedUser.Name;
                 return Ok(user);               
             }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            var user = userList.FirstOrDefault(x => x.Id == id);
+            if (user == null) return NotFound();
+
+            userList.Remove(user);
+
+            return Ok();
         }
 
     }
