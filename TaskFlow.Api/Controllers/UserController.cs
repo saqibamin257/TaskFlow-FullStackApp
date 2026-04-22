@@ -36,6 +36,19 @@ namespace TaskFlow.Api.Controllers
             userList.Add(user);
             return Ok(user);
         }
+        [HttpPut]
+        public ActionResult Put(int id, UserDTO updatedUser) 
+        {
+            var user = userList.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+                return NotFound();
+            else 
+            {
+                user.Email = updatedUser.Email;
+                user.Name = updatedUser.Name;
+                return Ok(user);               
+            }
+        }
 
     }
 
