@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="TaskFlow.Api/TaskFlow.Api.csproj" />
+    <Project Path="TaskFlow.Modules/TaskFlow.Modules.csproj" Id="b8ce6b9b-78ae-4321-a23d-d585c8db4f72" />
   </Folder>
 </Solution>
