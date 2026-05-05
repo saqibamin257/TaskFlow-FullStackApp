@@ -1,6 +1,18 @@
-@TaskFlow.Api_HostAddress = http://localhost:5182
+@TaskFlow.Api_HostAddress = https://localhost:7111
 
-GET {{TaskFlow.Api_HostAddress}}/weatherforecast/
+GET {{TaskFlow.Api_HostAddress}}/api/user
 Accept: application/json
 
-###
+### Create User
+POST {{TaskFlow.Api_HostAddress}}/api/user
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Muhammad Hassan Amin",
+  "email": "has@gmail.com",
+  "password": "5555",
+  "role": "Admin"
+}
+
+

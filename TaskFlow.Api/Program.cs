@@ -1,3 +1,4 @@
+using TaskFlow.Modules.Users.Application;
 using TaskFlow.Modules.Users.Application.Features.GetUsers;
 using TaskFlow.Modules.Users.Infrastructure;
 
@@ -18,12 +19,19 @@ builder.Services.AddCors(options =>
                         .AllowAnyHeader());
 });
 
+// Registers IUserRepository and other infrastructure services
+builder.Services.AddUsersInfrastructure();
+
+// ------------------------------
+// Register MediatR (Application Layer)
+// ------------------------------
+// Scans the Users Application assembly and registers all
+// IRequestHandler implementations (e.g., GetUsersHandler, CreateUserHandler)
+
 builder.Services.AddMediatR(cfg =>
 {
-    cfg.RegisterServicesFromAssembly(typeof(GetUsersHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly);
 });
-
-builder.Services.AddUsersInfrastructure();
 
 
 var app = builder.Build();
@@ -33,8 +41,11 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
 app.UseCors("AllowAll");
+
+// ------------------------------
+// Configure Middleware Pipeline
+// ------------------------------
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

@@ -10,8 +10,8 @@ namespace TaskFlow.Modules.Users.Infrastructure.Repositories
     {
         private static List<User> _users = new List<User>
                 {
-                  User.Create("Saqib Amin","saq@gmail.com",Guid.NewGuid()),
-                  User.Create("Waqar Amin","waq@gmail.com",Guid.NewGuid()),                  
+                  User.Create("Saqib Amin","saq@gmail.com","password1","Admin",Guid.NewGuid()),
+                  User.Create("Waqar Amin","waq@gmail.com","password2","Supervisor",Guid.NewGuid()),                  
                 };
         public Task AddAsync(User user, CancellationToken cancellation = default)
         {

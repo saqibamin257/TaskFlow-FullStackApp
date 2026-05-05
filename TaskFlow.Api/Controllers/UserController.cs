@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TaskFlow.Modules.Users.Application.Features.CreateUser;
 using TaskFlow.Modules.Users.Application.Features.GetUsers;
 
 namespace TaskFlow.Api.Controllers
@@ -20,6 +21,12 @@ namespace TaskFlow.Api.Controllers
         public async Task<ActionResult<List<GetUsersResponse>>> Get()
         {
             var result = await _mediator.Send(new GetUsersQuery());
+            return Ok(result);
+        }
+        [HttpPost]
+        public async Task<ActionResult<CreateUserResponse>> Post(CreateUserQuery query) 
+        {
+            var result = await _mediator.Send(query);
             return Ok(result);
         }
     }

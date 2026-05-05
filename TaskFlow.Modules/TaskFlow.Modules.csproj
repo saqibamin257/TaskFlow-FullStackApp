@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Users\Application\Features\CreateUser\" />
     <Folder Include="Users\Application\Features\DeleteUser\" />
     <Folder Include="Users\Application\Features\UpdateUser\" />
     <Folder Include="Users\Application\Mapping\" />
