@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
 });
 
 // Registers IUserRepository and other infrastructure services
-builder.Services.AddUsersInfrastructure();
+builder.Services.AddUsersInfrastructure(builder.Configuration);
 
 // ------------------------------
 // Register MediatR (Application Layer)
