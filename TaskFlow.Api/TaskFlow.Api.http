@@ -26,3 +26,6 @@ Content-Type: application/json
   "email": "updated@gmail.com"
 }
 
+### Delete User
+DELETE https://localhost:7111/api/user/1
+Accept: application/json
