@@ -30,7 +30,7 @@ namespace TaskFlow.Modules.Users.Domain.Entities
         {
             return new User(name, email,passwordHash,role,tenantId);
         }
-        public void Update(string name, string email) 
+        public void UpdateProfile(string name, string email) 
         {
             SetName(name);
             SetEmail(email);            

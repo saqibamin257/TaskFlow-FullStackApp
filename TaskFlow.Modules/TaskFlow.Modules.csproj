@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Users\Application\Features\DeleteUser\" />
-    <Folder Include="Users\Application\Features\UpdateUser\" />
     <Folder Include="Users\Application\Mapping\" />
     <Folder Include="Users\Domain\Enums\" />
     <Folder Include="Users\Domain\ValueObjects\" />

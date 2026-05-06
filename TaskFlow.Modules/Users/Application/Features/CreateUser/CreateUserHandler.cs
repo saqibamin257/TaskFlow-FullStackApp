@@ -7,14 +7,14 @@ using TaskFlow.Modules.Users.Domain.Entities;
 
 namespace TaskFlow.Modules.Users.Application.Features.CreateUser
 {
-    public class CreateUserHandler :IRequestHandler<CreateUserQuery,CreateUserResponse>
+    public class CreateUserHandler :IRequestHandler<CreateUserCommand,CreateUserResponse>
     {
         private readonly IUserRepository _userRepository;
         public CreateUserHandler(IUserRepository userRepository) 
         {
             _userRepository = userRepository;
         }
-        public async Task<CreateUserResponse> Handle(CreateUserQuery request, CancellationToken cancellationToken) 
+        public async Task<CreateUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken) 
         {
             //Temp password hashing (replace later)
             var passwordHash = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(request.Password));
