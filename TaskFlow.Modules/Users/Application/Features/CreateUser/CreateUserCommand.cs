@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TaskFlow.Modules.Users.Application.Features.CreateUser
 {
-    public class CreateUserQuery:IRequest<CreateUserResponse>
+    public class CreateUserCommand:IRequest<CreateUserResponse>
     {
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

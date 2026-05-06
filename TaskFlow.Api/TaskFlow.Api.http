@@ -1,5 +1,6 @@
 @TaskFlow.Api_HostAddress = https://localhost:7111
 
+### Get User
 GET {{TaskFlow.Api_HostAddress}}/api/user
 Accept: application/json
 
@@ -15,4 +16,13 @@ Accept: application/json
   "role": "Admin"
 }
 
+### Update User
+PUT https://localhost:7111/api/user/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Updated Name",
+  "email": "updated@gmail.com"
+}
 
