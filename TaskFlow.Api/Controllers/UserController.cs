@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskFlow.Modules.Users.Application.Features.CreateUser;
+using TaskFlow.Modules.Users.Application.Features.DeleteUser;
 using TaskFlow.Modules.Users.Application.Features.GetUsers;
 using TaskFlow.Modules.Users.Application.Features.UpdateUser;
 
@@ -37,6 +38,13 @@ namespace TaskFlow.Api.Controllers
             if (id != request.Id)
                 return BadRequest("Id mismatch");
             var result = await _mediator.Send(request);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> Delete(int id) 
+        {
+            var result = await _mediator.Send(new DeleteUserCommand { Id = id });
             return Ok(result);
         }
     }
