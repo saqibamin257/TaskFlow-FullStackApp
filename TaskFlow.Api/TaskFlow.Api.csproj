@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TaskFlow.BuildingBlocks\TaskFlow.BuildingBlocks.csproj" />
     <ProjectReference Include="..\TaskFlow.Modules\TaskFlow.Modules.csproj" />
   </ItemGroup>
 
