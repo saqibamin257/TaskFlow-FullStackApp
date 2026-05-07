@@ -1,4 +1,5 @@
 using MediatR;
+using TaskFlow.BuildingBlocks;
 using TaskFlow.BuildingBlocks.Application.Behaviors;
 using TaskFlow.BuildingBlocks.Presentation.Middleware;
 using TaskFlow.Modules.Users.Application;
@@ -45,16 +46,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly);
 });
 
-
-// Registers MediatR validation pipeline behavior.
-//
-// Every Command/Query passes through this behavior
-// before reaching its handler, allowing automatic
-// FluentValidation execution and centralized validation.
-
-builder.Services.AddTransient(
-    typeof(IPipelineBehavior<,>),
-    typeof(ValidationBehavior<,>));
+builder.Services.AddBuildingBlocks();
 
 var app = builder.Build();
 

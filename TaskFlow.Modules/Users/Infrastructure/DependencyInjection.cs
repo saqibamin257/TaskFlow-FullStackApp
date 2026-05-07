@@ -11,7 +11,7 @@ namespace TaskFlow.Modules.Users.Infrastructure
     {
         public static IServiceCollection AddUsersInfrastructure(this IServiceCollection services)
         {
-            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }
