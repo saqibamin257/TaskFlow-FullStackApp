@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.ComponentModel;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using TaskFlow.BuildingBlocks.Localization.Abstraction;
 using TaskFlow.BuildingBlocks.Presentation.Contracts;
 
 
@@ -17,10 +19,11 @@ namespace TaskFlow.BuildingBlocks.Presentation.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+       
         public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger) 
         {
             _next = next;
-            _logger = logger;
+            _logger = logger;            
         }
         public async Task InvokeAsync(HttpContext context) 
         {
@@ -37,14 +40,17 @@ namespace TaskFlow.BuildingBlocks.Presentation.Middleware
                 await HandleExceptionAsync(context, exception);
             }
         }
-        private static async Task HandleExceptionAsync(HttpContext context, Exception exception) 
+        private  async Task HandleExceptionAsync(HttpContext context, Exception exception) 
         {
             context.Response.ContentType = "application/json";
             switch (exception) 
             {
                 case ValidationException validationException:
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;                    
-
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                   
+                    var localizationService = context.RequestServices
+                                             .GetRequiredService<ILocalizationService>();
+                    
                     var validationResponse =
                         new ValidationErrorResponse
                         {
@@ -52,7 +58,8 @@ namespace TaskFlow.BuildingBlocks.Presentation.Middleware
                             .Select(error => new ValidationError
                             {
                                 Field = error.PropertyName,
-                                Code = error.ErrorMessage
+                                Code = error.ErrorMessage,
+                                Message= localizationService.GetString(error.ErrorMessage)
                             })
                             .ToList()
                         };
