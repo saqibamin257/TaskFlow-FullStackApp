@@ -1,7 +1,7 @@
 using MediatR;
 using TaskFlow.BuildingBlocks.Application.Behaviors;
+using TaskFlow.BuildingBlocks.Presentation.Middleware;
 using TaskFlow.Modules.Users.Application;
-using TaskFlow.Modules.Users.Application.Features.GetUsers;
 using TaskFlow.Modules.Users.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -71,7 +71,6 @@ app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
-
 app.Run();
