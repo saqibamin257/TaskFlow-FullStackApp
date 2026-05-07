@@ -1,0 +1,8 @@
+{
+  "validation.name.required": "نام لازمی ہے",
+  "validation.email.required": "ای میل لازمی ہے",
+  "validation.email.invalid": "ای میل درست نہیں",
+  "validation.password.required": "پاس ورڈ لازمی ہے",
+  "validation.role.required": "کردار لازمی ہے",
+  "validation.tenant.required": "ٹیننٹ لازمی ہے"
+}

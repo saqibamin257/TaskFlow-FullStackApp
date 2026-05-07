@@ -1,0 +1,8 @@
+{
+  "validation.name.required": "Name is required",
+  "validation.email.required": "Email is required",
+  "validation.email.invalid": "Invalid email format",
+  "validation.password.required": "Password is required",
+  "validation.role.required": "Role is required",
+  "validation.tenant.required": "Tenant is required"
+}
