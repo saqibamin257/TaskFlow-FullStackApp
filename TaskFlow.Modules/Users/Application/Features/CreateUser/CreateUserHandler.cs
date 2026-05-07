@@ -25,7 +25,7 @@ namespace TaskFlow.Modules.Users.Application.Features.CreateUser
                 request.Email,
                 passwordHash,
                 request.Role,
-                Guid.NewGuid() // later from teenant Context
+                request.TenantId
                 );
 
             //save

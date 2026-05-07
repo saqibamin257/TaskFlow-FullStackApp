@@ -1,3 +1,5 @@
+using MediatR;
+using TaskFlow.BuildingBlocks.Application.Behaviors;
 using TaskFlow.Modules.Users.Application;
 using TaskFlow.Modules.Users.Application.Features.GetUsers;
 using TaskFlow.Modules.Users.Infrastructure;
@@ -19,6 +21,16 @@ builder.Services.AddCors(options =>
                         .AllowAnyHeader());
 });
 
+
+// Registers Users module application layer services:
+// - MediatR handlers
+// - FluentValidation validators
+// - CQRS-related application services
+//
+// Assembly scanning automatically discovers handlers
+// and validators from the Users module.
+builder.Services.AddUsersApplication();
+
 // Registers IUserRepository and other infrastructure services
 builder.Services.AddUsersInfrastructure();
 
@@ -33,6 +45,16 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly);
 });
 
+
+// Registers MediatR validation pipeline behavior.
+//
+// Every Command/Query passes through this behavior
+// before reaching its handler, allowing automatic
+// FluentValidation execution and centralized validation.
+
+builder.Services.AddTransient(
+    typeof(IPipelineBehavior<,>),
+    typeof(ValidationBehavior<,>));
 
 var app = builder.Build();
 
