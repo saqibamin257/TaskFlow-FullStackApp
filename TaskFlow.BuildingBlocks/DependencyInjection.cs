@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,8 @@ using System.Text;
 using TaskFlow.BuildingBlocks.Application.Behaviors;
 using TaskFlow.BuildingBlocks.Localization.Abstraction;
 using TaskFlow.BuildingBlocks.Localization.Services;
+using TaskFlow.BuildingBlocks.Security.Abstraction;
+using TaskFlow.BuildingBlocks.Security.Services;
 
 namespace TaskFlow.BuildingBlocks
 {
@@ -42,6 +45,16 @@ namespace TaskFlow.BuildingBlocks
             services.AddScoped<
                 ILocalizationService,
                 JsonLocalizationService>();
+
+
+            //------ service:4
+            //----Password Hasher
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
+
+            //------ service:5
+            //----Token Provider
+            services.AddSingleton<ITokenProvider, TokenProvider>();
+
 
             return services;
         }

@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TaskFlow.BuildingBlocks.Security.Abstraction;
 using TaskFlow.Modules.Users.Application.Abstractions;
 using TaskFlow.Modules.Users.Domain.Entities;
 
@@ -10,14 +12,15 @@ namespace TaskFlow.Modules.Users.Application.Features.CreateUser
     public class CreateUserHandler :IRequestHandler<CreateUserCommand,CreateUserResponse>
     {
         private readonly IUserRepository _userRepository;
-        public CreateUserHandler(IUserRepository userRepository) 
+        private readonly IPasswordHasher _passwordHasher;
+        public CreateUserHandler(IUserRepository userRepository, IPasswordHasher passwordHasher) 
         {
             _userRepository = userRepository;
+            _passwordHasher = passwordHasher;
         }
         public async Task<CreateUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken) 
-        {
-            //Temp password hashing (replace later)
-            var passwordHash = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(request.Password));
+        {            
+            var passwordHash = _passwordHasher.Hash(request.Password);
 
             //Domain Creation
             var user = User.Create(

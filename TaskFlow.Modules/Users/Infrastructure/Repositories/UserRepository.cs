@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 using TaskFlow.Modules.Users.Application.Abstractions;
 using TaskFlow.Modules.Users.Domain.Entities;
@@ -46,6 +47,11 @@ namespace TaskFlow.Modules.Users.Infrastructure.Repositories
         {
             _context.Users.Remove(user);
             await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
         }
     }
 }
