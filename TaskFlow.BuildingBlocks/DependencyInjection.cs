@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -15,14 +16,11 @@ namespace TaskFlow.BuildingBlocks
     public static class DependencyInjection
     {
         public static IServiceCollection AddBuildingBlocks(
-            this IServiceCollection services)
+            this IServiceCollection services, IConfiguration configuration)
         {
             //-------- service:1
             // Allows services to access current HTTP request context.
             services.AddHttpContextAccessor();
-
-
-
 
             //-------- service:2
             // Registers MediatR pipeline behaviors
@@ -51,9 +49,22 @@ namespace TaskFlow.BuildingBlocks
             //----Password Hasher
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
+
+
+
+            ////----- service:6
+            ////----- Token Option
+            //services.Configure<TokenOptions>(configuration.GetSection("Token"));
+            //Console.WriteLine(
+            //    configuration["Token:Issuer"]);
+
+            //Console.WriteLine(
+            //    configuration["Token:SecretKey"]);
+
             //------ service:5
             //----Token Provider
-            services.AddSingleton<ITokenProvider, TokenProvider>();
+            services.AddScoped<ITokenProvider, TokenProvider>();
+
 
 
             return services;

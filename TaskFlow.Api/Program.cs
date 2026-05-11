@@ -46,7 +46,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly);
 });
 
-builder.Services.AddBuildingBlocks();
+builder.Services.AddBuildingBlocks(builder.Configuration);
 
 var app = builder.Build();
 

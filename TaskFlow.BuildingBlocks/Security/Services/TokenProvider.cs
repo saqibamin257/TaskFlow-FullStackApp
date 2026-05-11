@@ -1,24 +1,29 @@
 ﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Paseto;
 using Paseto.Builder;
 using Paseto.Cryptography.Key;
+using Paseto.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using TaskFlow.BuildingBlocks.Models;
 using TaskFlow.BuildingBlocks.Security.Abstraction;
-using Paseto.Protocol;
 
 namespace TaskFlow.BuildingBlocks.Security.Services
 {
     public class TokenProvider:ITokenProvider
     {
-        private readonly Models.TokenOptions _tokenOptions;
-        public TokenProvider(IOptions<Models.TokenOptions> tokenOptions)
+        //private readonly Models.TokenOptions _tokenOptions;
+        private readonly IConfiguration _configuration;
+
+        //public TokenProvider(IOptions<Models.TokenOptions> tokenOptions)
+        public TokenProvider(IConfiguration configuration)
         {
-            _tokenOptions = tokenOptions.Value;
+            //_tokenOptions = tokenOptions.Value;
+            _configuration = configuration;
         }
 
         public string Generate(Models.AuthenticatedUser user)
@@ -28,11 +33,10 @@ namespace TaskFlow.BuildingBlocks.Security.Services
             var token = new PasetoBuilder()
             .Use(ProtocolVersion.V4, Purpose.Local)
             .WithKey(key)
-            .Issuer(_tokenOptions.Issuer)
-            .Audience(_tokenOptions.Audience)
+            .Issuer(_configuration["Token:Issuer"])
+            .Audience(_configuration["Token:Audience"])
             .Subject(user.UserId.ToString())
-            .Expiration(DateTime.UtcNow.AddMinutes(
-                _tokenOptions.ExpiryMinutes))
+            .Expiration(DateTime.UtcNow.AddMinutes( Convert.ToDouble(_configuration["Token:ExpiryMinutes"])))
             .AddClaim("email", user.Email)
             .AddClaim("role", user.Role)
             .AddClaim("tenantId",
@@ -45,8 +49,7 @@ namespace TaskFlow.BuildingBlocks.Security.Services
         private PasetoSymmetricKey GetSymmetricKey()
         {
             var keyBytes =
-                Convert.FromBase64String(
-                    _tokenOptions.SecretKey);
+                Convert.FromBase64String(_configuration["Token:SecretKey"]);
 
             if (keyBytes.Length != 32)
             {
