@@ -52,7 +52,7 @@ namespace TaskFlow.BuildingBlocks
 
 
 
-            ////----- service:6
+            ////----- service:5
             ////----- Token Option
             //services.Configure<TokenOptions>(configuration.GetSection("Token"));
             //Console.WriteLine(
@@ -61,10 +61,13 @@ namespace TaskFlow.BuildingBlocks
             //Console.WriteLine(
             //    configuration["Token:SecretKey"]);
 
-            //------ service:5
+            //------ service:6
             //----Token Provider
             services.AddScoped<ITokenProvider, TokenProvider>();
-
+            
+            ////----- service:7
+            ////----- Token Validator 
+            services.AddScoped<ITokenValidator,TokenValidator>();
 
 
             return services;

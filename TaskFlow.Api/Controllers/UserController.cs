@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskFlow.Modules.Users.Application.Features.CreateUser;
@@ -19,6 +20,7 @@ namespace TaskFlow.Api.Controllers
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<GetUsersResponse>>> Get()
         {
