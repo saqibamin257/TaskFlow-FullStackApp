@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TaskFlow.BuildingBlocks.Security.Abstraction;
 using TaskFlow.Modules.Users.Application.Features.CreateUser;
 using TaskFlow.Modules.Users.Application.Features.DeleteUser;
 using TaskFlow.Modules.Users.Application.Features.GetUsers;
@@ -14,13 +15,28 @@ namespace TaskFlow.Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ICurrentUser _currentUser;
 
-        public UserController(IMediator mediator)
+        public UserController(IMediator mediator, ICurrentUser currentUser)
         {
             _mediator = mediator;
+            _currentUser = currentUser;
+        }
+        [Authorize]
+        [HttpGet("me")]
+        public IActionResult Me()
+        {
+            return Ok(new
+            {
+                _currentUser.UserId,
+                _currentUser.Email,
+                _currentUser.Role,
+                _currentUser.TenantId,
+                _currentUser.IsAuthenticated
+            });
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<List<GetUsersResponse>>> Get()
         {
@@ -35,7 +51,7 @@ namespace TaskFlow.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<UpdateUserResponse>> Put(int id, UpdateUserCommand request) 
+        public async Task<ActionResult<UpdateUserResponse>> Put(Guid id, UpdateUserCommand request) 
         {
             if (id != request.Id)
                 return BadRequest("Id mismatch");
@@ -44,7 +60,7 @@ namespace TaskFlow.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> Delete(int id) 
+        public async Task<ActionResult<bool>> Delete(Guid id) 
         {
             var result = await _mediator.Send(new DeleteUserCommand { Id = id });
             return Ok(result);

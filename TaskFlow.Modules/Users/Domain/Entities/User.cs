@@ -6,7 +6,7 @@ namespace TaskFlow.Modules.Users.Domain.Entities
 {
     public class User
     {
-        public int Id { get; private set;}
+        public Guid Id { get; private set;}
         public string Name { get; private set; } = string.Empty;
         public string Email { get; private set; } = string.Empty;
         public string PasswordHash { get; private set; } = string.Empty;
@@ -51,7 +51,7 @@ namespace TaskFlow.Modules.Users.Domain.Entities
                 throw new ArgumentException("Email can not be empty");
             Email = email;
         }
-        internal void SetId(int id)
+        internal void SetId(Guid id)
         {
             Id = id;
         }

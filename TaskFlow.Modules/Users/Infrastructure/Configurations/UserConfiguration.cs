@@ -23,6 +23,8 @@ namespace TaskFlow.Modules.Users.Infrastructure.Configurations
             // Primary Key
             // ------------------------------
             builder.HasKey(x => x.Id);
+            builder.Property(x=>x.Id).HasDefaultValueSql(
+                    "NEWSEQUENTIALID()");
 
             // ------------------------------
             // Properties

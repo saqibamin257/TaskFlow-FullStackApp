@@ -24,11 +24,10 @@ namespace TaskFlow.Modules.Users.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("TaskFlow.Modules.Users.Domain.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<DateTime>("CreatedAtUTC")
                         .HasColumnType("datetime2");
