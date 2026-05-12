@@ -1,7 +1,10 @@
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using TaskFlow.BuildingBlocks;
 using TaskFlow.BuildingBlocks.Application.Behaviors;
 using TaskFlow.BuildingBlocks.Presentation.Middleware;
+using TaskFlow.BuildingBlocks.Security.Authentication;
+using TaskFlow.BuildingBlocks.Security.Constants;
 using TaskFlow.Modules.Users.Application;
 using TaskFlow.Modules.Users.Infrastructure;
 
@@ -48,6 +51,18 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddBuildingBlocks(builder.Configuration);
 
+
+//PASETO AUTHENTICATION
+builder.Services.AddAuthentication(AuthenticationSchemes.Bearer)
+                .AddScheme<AuthenticationSchemeOptions,PasetoAuthenticationHandler>
+                          (AuthenticationSchemes.Bearer,null);
+
+builder.Services.AddAuthorization();
+
+
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -61,7 +76,7 @@ app.UseCors("AllowAll");
 // Configure Middleware Pipeline
 // ------------------------------
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
