@@ -69,6 +69,10 @@ namespace TaskFlow.BuildingBlocks
             ////----- Token Validator 
             services.AddScoped<ITokenValidator,TokenValidator>();
 
+            ////----- service:8
+            ////----- CurrentUser values from HttpContext 
+            services.AddScoped<ICurrentUser,CurrentUser>();
+
 
             return services;
         }

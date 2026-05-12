@@ -12,7 +12,7 @@ using TaskFlow.Modules.Users.Infrastructure.Persistence;
 namespace TaskFlow.Modules.Users.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(UsersDbContext))]
-    [Migration("20260506115359_InitialCreate")]
+    [Migration("20260512073813_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -27,11 +27,10 @@ namespace TaskFlow.Modules.Users.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("TaskFlow.Modules.Users.Domain.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<DateTime>("CreatedAtUTC")
                         .HasColumnType("datetime2");

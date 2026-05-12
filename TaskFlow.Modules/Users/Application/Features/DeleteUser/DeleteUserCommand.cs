@@ -7,6 +7,6 @@ namespace TaskFlow.Modules.Users.Application.Features.DeleteUser
 {
     public class DeleteUserCommand:IRequest<bool>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace TaskFlow.Modules.Users.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);            
         }
 
-        public async Task<User?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);        
         }
