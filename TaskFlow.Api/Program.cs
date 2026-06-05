@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
+using TaskFlow.Api.Extensions;
 using TaskFlow.BuildingBlocks;
 using TaskFlow.BuildingBlocks.Application.Behaviors;
 using TaskFlow.BuildingBlocks.Presentation.Middleware;
@@ -60,7 +61,7 @@ builder.Services.AddAuthentication(AuthenticationSchemes.Bearer)
 builder.Services.AddAuthorization();
 
 
-
+builder.Services.AddObservability(builder.Configuration); //open telemetry signoze
 
 
 var app = builder.Build();
