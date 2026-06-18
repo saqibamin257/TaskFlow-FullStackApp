@@ -10,7 +10,7 @@ namespace TaskFlow.BuildingBlocks.Localization
             "validation.name.required";
 
         public const string EmailRequired =
-            "validation.email.required";
+            "validation.email.required";       
 
         public const string InvalidEmail =
             "validation.email.invalid";
@@ -23,5 +23,11 @@ namespace TaskFlow.BuildingBlocks.Localization
 
         public const string TenantRequired =
             "validation.tenant.required";
+
+        public const string OrganizationNameRequired =
+            "validation.organization.name.required";
+
+        public const string OrganizationSlugRequired =
+            "validation.organization.slug.required";
     }
 }

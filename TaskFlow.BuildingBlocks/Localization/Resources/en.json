@@ -1,8 +1,20 @@
 {
+  //validation
   "validation.name.required": "Name is required",
   "validation.email.required": "Email is required",
   "validation.email.invalid": "Invalid email format",
   "validation.password.required": "Password is required",
   "validation.role.required": "Role is required",
-  "validation.tenant.required": "Tenant is required"
+  "validation.tenant.required": "Tenant is required",
+  "validation.organization.name.required": "Organization name is required",
+  "validation.organization.slug.required": "Organization slug is required",
+
+  //errors
+  "error.organization.notfound": "Organization not found",
+  "error.organization.slug.exists": "Organization slug already exists",
+  "error.organization.name.exists": "Organization name already exists",
+
+
+  //access
+  "error.unauthorized": "Unauthorized access"
 }

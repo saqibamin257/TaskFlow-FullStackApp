@@ -6,6 +6,8 @@ using TaskFlow.BuildingBlocks.Application.Behaviors;
 using TaskFlow.BuildingBlocks.Presentation.Middleware;
 using TaskFlow.BuildingBlocks.Security.Authentication;
 using TaskFlow.BuildingBlocks.Security.Constants;
+using TaskFlow.Modules.Organizations.Application;
+using TaskFlow.Modules.Organizations.Infrastructure;
 using TaskFlow.Modules.Users.Application;
 using TaskFlow.Modules.Users.Infrastructure;
 
@@ -38,6 +40,14 @@ builder.Services.AddUsersApplication();
 
 // Registers IUserRepository and other infrastructure services
 builder.Services.AddUsersInfrastructure(builder.Configuration);
+
+
+//Registers Organization module application layer services
+builder.Services.AddOrganizationsApplication();
+
+// Registers IOrganizationRepository and other infrastructure services
+builder.Services.AddOrganizationsInfrastructure(builder.Configuration);
+
 
 // ------------------------------
 // Register MediatR (Application Layer)

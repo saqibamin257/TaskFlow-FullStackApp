@@ -1,8 +1,20 @@
 {
+  //validations
+
   "validation.name.required": "نام لازمی ہے",
   "validation.email.required": "ای میل لازمی ہے",
   "validation.email.invalid": "ای میل درست نہیں",
   "validation.password.required": "پاس ورڈ لازمی ہے",
   "validation.role.required": "کردار لازمی ہے",
-  "validation.tenant.required": "ٹیننٹ لازمی ہے"
+  "validation.tenant.required": "ٹیننٹ لازمی ہے",
+  "validation.organization.name.required": "ادارے کا نام لازمی ہے",
+  "validation.organization.slug.required": "ادارے کا منفرد نام لازمی ہے",
+
+  //errors
+  "error.organization.notfound": "ادارہ موجود نہیں",
+  "error.organization.slug.exists": "ادارے کا سلاگ پہلے سے موجود ہے",
+  "error.organization.name.exists": "ادارے کا نام پہلے سے موجود ہے",
+
+  //access
+  "error.unauthorized": "رسائی کی اجازت نہیں"
 }
