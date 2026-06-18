@@ -69,7 +69,7 @@ namespace TaskFlow.Modules.Organizations.Domain.Entities
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Organization name cannot be empty.");
 
-            Name = name;
+            Name = name.Trim();
         }
 
         private void SetSlug(string slug)

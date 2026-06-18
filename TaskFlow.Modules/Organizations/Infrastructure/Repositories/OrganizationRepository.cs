@@ -68,12 +68,20 @@ namespace TaskFlow.Modules.Organizations.Infrastructure.Repositories
 
         public async Task<bool> ExistsBySlugAsync(string slug, CancellationToken cancellationToken = default)
         {
-            return await _context.Organizations.AnyAsync(x => x.Slug == slug, cancellationToken);
+            var normalizedSlug = slug.Trim().ToLowerInvariant();
+
+            return await _context.Organizations
+                    .AnyAsync(x => x.Slug == normalizedSlug,cancellationToken);
         }
 
         public async Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken = default)
         {
-            return await _context.Organizations.AnyAsync(x => x.Name == name, cancellationToken);
+            var normalizedName = name.Trim();
+
+            return await _context.Organizations
+                .AnyAsync(
+                    x => x.Name == normalizedName,
+                    cancellationToken);
         }
 
         public async Task<bool> ExistsByOwnerUserIdAsync(Guid ownerUserId, CancellationToken cancellationToken = default)

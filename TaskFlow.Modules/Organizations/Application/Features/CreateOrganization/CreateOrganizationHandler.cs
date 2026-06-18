@@ -36,7 +36,7 @@ namespace TaskFlow.Modules.Organizations.Application.Features.CreateOrganization
                     ErrorKeys.OrganizationSlugAlreadyExists);
             }
 
-            var nameExists = await _organizationRepository.ExistsByNameAsync(request.Name,cancellationToken);
+            var nameExists = await _organizationRepository.ExistsByNameAsync(request.Name, cancellationToken);
 
             if (nameExists)
             {
