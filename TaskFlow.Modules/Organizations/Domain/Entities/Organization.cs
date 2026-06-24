@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
+using TaskFlow.BuildingBlocks.Localization;
 
 namespace TaskFlow.Modules.Organizations.Domain.Entities
 {
@@ -66,17 +68,20 @@ namespace TaskFlow.Modules.Organizations.Domain.Entities
 
         private void SetName(string name)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Organization name cannot be empty.");
-
+            if (string.IsNullOrWhiteSpace(name)) 
+            {
+                throw new ValidationException(
+                    ValidationKeys.OrganizationNameRequired);
+            }
             Name = name.Trim();
         }
 
         private void SetSlug(string slug)
         {
-            if (string.IsNullOrWhiteSpace(slug))
-                throw new ArgumentException("Organization slug cannot be empty.");
-
+            if (string.IsNullOrWhiteSpace(slug)) 
+            {
+                throw new ValidationException(ValidationKeys.OrganizationSlugRequired);
+            }
             Slug = slug.Trim().ToLowerInvariant();
         }
 

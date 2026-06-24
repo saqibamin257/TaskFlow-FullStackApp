@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
+using TaskFlow.BuildingBlocks.Localization;
 
 namespace TaskFlow.Modules.Users.Domain.Entities
 {
@@ -41,14 +43,21 @@ namespace TaskFlow.Modules.Users.Domain.Entities
         }
         private void SetName(string name)
         {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentException("Name can not be empty");
+            if (string.IsNullOrEmpty(name)) 
+            {
+                throw new ValidationException(
+                    ValidationKeys.NameRequired);
+            }
             Name = name;
         }
         private void SetEmail(string email)
         {
-            if (string.IsNullOrEmpty(email))
-                throw new ArgumentException("Email can not be empty");
+            if (string.IsNullOrEmpty(email)) 
+            {
+                throw new ValidationException(
+                   ValidationKeys.EmailRequired);
+            }
+                
             Email = email;
         }
         internal void SetId(Guid id)
