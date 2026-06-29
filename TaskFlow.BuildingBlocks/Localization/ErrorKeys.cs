@@ -17,6 +17,9 @@ namespace TaskFlow.BuildingBlocks.Localization
             "error.organization.name.exists";
 
         public const string Unauthorized =
-            "error.unauthorized";
+            "error.unauthorized";    
+
+        public const string InternalServerError =
+            "internal.server.error";
     }
 }

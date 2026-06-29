@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskFlow.Modules.Organizations.Application.Features.CreateOrganization;
+using TaskFlow.Modules.Organizations.Application.Features.GetOrganization;
 
 namespace TaskFlow.Api.Controllers
 {
@@ -29,6 +30,14 @@ namespace TaskFlow.Api.Controllers
             return Ok(response);
 
             //return CreatedAtAction(nameof(CreateOrganization),new { id = response.Id },response);
+        }
+
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult<GetOrganizationResponse>> GetOrganizationById(Guid id,CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetOrganizationQuery(id),cancellationToken);
+
+            return Ok(response);
         }
     }
 }
