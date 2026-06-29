@@ -12,6 +12,7 @@ namespace TaskFlow.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -22,7 +23,8 @@ namespace TaskFlow.Api.Controllers
             _mediator = mediator;
             _currentUser = currentUser;
         }
-        [Authorize]
+
+       
         [HttpGet("me")]
         public IActionResult Me()
         {
@@ -35,14 +37,14 @@ namespace TaskFlow.Api.Controllers
                 _currentUser.IsAuthenticated
             });
         }
-
-        //[Authorize]
+        
         [HttpGet]
         public async Task<ActionResult<List<GetUsersResponse>>> Get()
         {
             var result = await _mediator.Send(new GetUsersQuery());
             return Ok(result);
         }
+
         [HttpPost]
         public async Task<ActionResult<CreateUserResponse>> Post(CreateUserCommand request)
         {
