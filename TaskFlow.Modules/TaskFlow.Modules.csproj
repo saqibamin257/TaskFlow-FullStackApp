@@ -13,7 +13,6 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="Organizations\Application\Features\DeleteOrganization\" />
-    <Folder Include="Organizations\Application\Features\GetOrganization\" />
     <Folder Include="Organizations\Application\Features\UpdateOrganization\" />
     <Folder Include="Organizations\Infrastructure\Persistence\Migrations\" />
     <Folder Include="Users\Application\Mapping\" />
