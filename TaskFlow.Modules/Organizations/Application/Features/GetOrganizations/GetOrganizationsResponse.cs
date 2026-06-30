@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TaskFlow.Modules.Organizations.Application.Features.GetOrganization
 {
-    public sealed record GetOrganizationResponse(
+    public sealed record GetOrganizationsResponse(
     Guid Id,
     string Name,
     string Slug,
