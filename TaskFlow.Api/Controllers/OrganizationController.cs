@@ -24,7 +24,7 @@ namespace TaskFlow.Api.Controllers
         [ProducesResponseType(typeof(CreateOrganizationResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]   
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<CreateOrganizationResponse>> CreateOrganization(CreateOrganizationCommand command,CancellationToken cancellationToken)
+        public async Task<ActionResult<CreateOrganizationResponse>> Create(CreateOrganizationCommand command,CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(command,cancellationToken);
             return Ok(response);
@@ -32,11 +32,11 @@ namespace TaskFlow.Api.Controllers
             //return CreatedAtAction(nameof(CreateOrganization),new { id = response.Id },response);
         }
 
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<GetOrganizationResponse>> GetOrganizationById(Guid id,CancellationToken cancellationToken)
+        [HttpGet]
+        [ProducesResponseType(typeof(List<GetOrganizationsResponse>), StatusCodes.Status200OK)]        
+        public async Task<ActionResult<List<GetOrganizationsResponse>>> Get(CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetOrganizationQuery(id),cancellationToken);
-
+            var response = await _mediator.Send(new GetOrganizationsQuery(),cancellationToken);
             return Ok(response);
         }
     }
