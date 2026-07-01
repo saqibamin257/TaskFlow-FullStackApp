@@ -79,5 +79,17 @@ namespace TaskFlow.Modules.Organizations.Infrastructure.Repositories
                     x => x.Name == normalizedName,
                     cancellationToken);
         }
+
+        public async Task<bool> ExistsBySlugExcludingOrganizationAsync(string slug, Guid organizationId, CancellationToken cancellationToken = default)
+        {
+            var normalizedSlug = slug.Trim().ToLowerInvariant();
+            return await _context.Organizations.AnyAsync(x => x.Id != organizationId && x.Slug == normalizedSlug, cancellationToken);
+        }
+
+        public async Task<bool> ExistsByNameExcludingOrganizationAsync(string name, Guid organizationId, CancellationToken cancellationToken = default)
+        {
+            var normalizedName = name.Trim();
+            return await _context.Organizations.AnyAsync(x => x.Id != organizationId && x.Name == normalizedName, cancellationToken);
+        }
     }
 }

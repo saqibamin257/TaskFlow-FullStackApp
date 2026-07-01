@@ -14,8 +14,12 @@
   "error.organization.notfound": "ادارہ موجود نہیں",
   "error.organization.slug.exists": "ادارے کا سلاگ پہلے سے موجود ہے",
   "error.organization.name.exists": "ادارے کا نام پہلے سے موجود ہے",
+  "error.organization.access.denied": "آپ کو اس ادارے پر یہ کارروائی انجام دینے کی اجازت نہیں ہے۔",
   "internal.server.error": "ایک غیر متوقع خرابی پیش آگئی۔",
 
   //access
-  "error.unauthorized": "رسائی کی اجازت نہیں"
+  "error.unauthorized": "رسائی کی اجازت نہیں",
+  
+  //general
+  "error.general.id.mismatch": "درخواست میں دیا گیا شناختی نمبر درست نہیں ہے۔"
 }
