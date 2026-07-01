@@ -1,5 +1,6 @@
 {
   //validation
+  "validation.id.required": "Id is required",
   "validation.name.required": "Name is required",
   "validation.email.required": "Email is required",
   "validation.email.invalid": "Invalid email format",
@@ -14,8 +15,9 @@
   "error.organization.slug.exists": "Organization slug already exists",
   "error.organization.name.exists": "Organization name already exists",
   "error.organization.access.denied": "You do not have permission to perform this action on this organization",
-  "internal.server.error": "An unexpected error occurred",
+  "error.organization.already.deactivated": "The organization has already been deactivated.",
 
+  "internal.server.error": "An unexpected error occurred",
   //access
   "error.unauthorized": "Unauthorized access",
 

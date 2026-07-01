@@ -1,6 +1,6 @@
 {
   //validations
-
+  "validation.id.required": "آئی ڈی فراہم کرنا ضروری ہے",
   "validation.name.required": "نام لازمی ہے",
   "validation.email.required": "ای میل لازمی ہے",
   "validation.email.invalid": "ای میل درست نہیں",
@@ -15,11 +15,12 @@
   "error.organization.slug.exists": "ادارے کا سلاگ پہلے سے موجود ہے",
   "error.organization.name.exists": "ادارے کا نام پہلے سے موجود ہے",
   "error.organization.access.denied": "آپ کو اس ادارے پر یہ کارروائی انجام دینے کی اجازت نہیں ہے۔",
+  "error.organization.already.deactivated": "یہ تنظیم پہلے ہی غیر فعال کی جا چکی ہے۔",
   "internal.server.error": "ایک غیر متوقع خرابی پیش آگئی۔",
 
   //access
   "error.unauthorized": "رسائی کی اجازت نہیں",
-  
+
   //general
   "error.general.id.mismatch": "درخواست میں دیا گیا شناختی نمبر درست نہیں ہے۔"
 }

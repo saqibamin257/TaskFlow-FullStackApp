@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskFlow.BuildingBlocks.Localization;
 using TaskFlow.Modules.Organizations.Application.Features.CreateOrganization;
+using TaskFlow.Modules.Organizations.Application.Features.DeactivateOrganization;
 using TaskFlow.Modules.Organizations.Application.Features.GetOrganization;
 using TaskFlow.Modules.Organizations.Application.Features.UpdateOrganization;
 
@@ -51,6 +52,11 @@ namespace TaskFlow.Api.Controllers
             return Ok(result);
         }
 
-
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id,CancellationToken cancellationToken)
+        {
+            await _mediator.Send(new DeactivateOrganizationCommand(id),cancellationToken);
+            return NoContent();
+        }
     }
 }
