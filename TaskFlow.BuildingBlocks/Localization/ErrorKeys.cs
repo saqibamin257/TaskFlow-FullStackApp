@@ -21,5 +21,8 @@ namespace TaskFlow.BuildingBlocks.Localization
 
         public const string InternalServerError =
             "internal.server.error";
+        
+        public const string OrganizationAccessDenied = 
+            "error.organization.access.denied";
     }
 }

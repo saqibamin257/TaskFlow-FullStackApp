@@ -13,7 +13,9 @@
   "error.organization.notfound": "Organization not found",
   "error.organization.slug.exists": "Organization slug already exists",
   "error.organization.name.exists": "Organization name already exists",
-  "internal.server.error": "An unexpected error occurred.",
+  "error.organization.access.denied": "You do not have permission to perform this action on this organization",
+  "internal.server.error": "An unexpected error occurred",
+
 
 
   //access
