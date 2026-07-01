@@ -6,6 +6,9 @@ namespace TaskFlow.BuildingBlocks.Localization
 {
     public static class ValidationKeys
     {
+        public const string IdRequired =
+            "validation.id.required";
+        
         public const string NameRequired =
             "validation.name.required";
 

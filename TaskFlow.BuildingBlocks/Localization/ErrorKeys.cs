@@ -25,6 +25,10 @@ namespace TaskFlow.BuildingBlocks.Localization
         public const string OrganizationAccessDenied = 
             "error.organization.access.denied";
 
+        public const string OrganizationAlreadyDeactivated =
+            "error.organization.already.deactivated";
+
+
         // general error
         public const string IdMismatched = "error.general.id.mismatch";
     }
