@@ -24,5 +24,8 @@ namespace TaskFlow.BuildingBlocks.Localization
         
         public const string OrganizationAccessDenied = 
             "error.organization.access.denied";
+
+        // general error
+        public const string IdMismatched = "error.general.id.mismatch";
     }
 }

@@ -18,5 +18,8 @@
   "internal.server.error": "ایک غیر متوقع خرابی پیش آگئی۔",
 
   //access
-  "error.unauthorized": "رسائی کی اجازت نہیں"
+  "error.unauthorized": "رسائی کی اجازت نہیں",
+  
+  //general
+  "error.general.id.mismatch": "درخواست میں دیا گیا شناختی نمبر درست نہیں ہے۔"
 }

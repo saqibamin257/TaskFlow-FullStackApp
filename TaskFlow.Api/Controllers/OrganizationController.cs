@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TaskFlow.BuildingBlocks.Localization;
 using TaskFlow.Modules.Organizations.Application.Features.CreateOrganization;
 using TaskFlow.Modules.Organizations.Application.Features.GetOrganization;
+using TaskFlow.Modules.Organizations.Application.Features.UpdateOrganization;
 
 namespace TaskFlow.Api.Controllers
 {
@@ -39,5 +41,16 @@ namespace TaskFlow.Api.Controllers
             var response = await _mediator.Send(new GetOrganizationsQuery(),cancellationToken);
             return Ok(response);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<UpdateOrganizationResponse>> Put(Guid id, UpdateOrganizationCommand request) 
+        {
+            if (id != request.Id)
+                return BadRequest(ErrorKeys.IdMismatched);
+            var result = await _mediator.Send(request);
+            return Ok(result);
+        }
+
+
     }
 }

@@ -16,8 +16,11 @@
   "error.organization.access.denied": "You do not have permission to perform this action on this organization",
   "internal.server.error": "An unexpected error occurred",
 
-
-
   //access
-  "error.unauthorized": "Unauthorized access"
+  "error.unauthorized": "Unauthorized access",
+
+  //general
+  "error.general.id.mismatch": "The provided ID does not match the requested resource."
+
+
 }
