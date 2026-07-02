@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TaskFlow.BuildingBlocks.Localization;
 using TaskFlow.BuildingBlocks.Security.Abstraction;
 using TaskFlow.Modules.Users.Application.Features.CreateUser;
 using TaskFlow.Modules.Users.Application.Features.DeleteUser;
@@ -13,59 +14,57 @@ namespace TaskFlow.Api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class UserController : ControllerBase
+    public sealed class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ICurrentUser _currentUser;
-
-        public UserController(IMediator mediator, ICurrentUser currentUser)
+        public UserController(IMediator mediator)
         {
-            _mediator = mediator;
-            _currentUser = currentUser;
+            _mediator = mediator;            
         }
 
-       
-        [HttpGet("me")]
-        public IActionResult Me()
-        {
-            return Ok(new
-            {
-                _currentUser.UserId,
-                _currentUser.Email,
-                _currentUser.Role,
-                _currentUser.TenantId,
-                _currentUser.IsAuthenticated
-            });
-        }
-        
         [HttpGet]
-        public async Task<ActionResult<List<GetUsersResponse>>> Get()
+        [ProducesResponseType(typeof(List<GetUsersResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<List<GetUsersResponse>>> Get(CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new GetUsersQuery());
+            var result = await _mediator.Send(new GetUsersQuery(), cancellationToken);
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult<CreateUserResponse>> Post(CreateUserCommand request)
+        [ProducesResponseType(typeof(CreateUserResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<CreateUserResponse>> Post(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(request);
-            return Ok(result);
+            var result = await _mediator.Send(request, cancellationToken);
+            return StatusCode(StatusCodes.Status201Created, result);           
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<UpdateUserResponse>> Put(Guid id, UpdateUserCommand request) 
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(typeof(UpdateUserResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)] //implement later
+        [ProducesResponseType(StatusCodes.Status404NotFound)]  //implement later
+        public async Task<ActionResult<UpdateUserResponse>> Put(Guid id, UpdateUserCommand request, CancellationToken cancellationToken) 
         {
             if (id != request.Id)
-                return BadRequest("Id mismatch");
-            var result = await _mediator.Send(request);
+                return BadRequest(ErrorKeys.IdMismatched);
+            var result = await _mediator.Send(request, cancellationToken);
             return Ok(result);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> Delete(Guid id) 
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)] //implement later
+        [ProducesResponseType(StatusCodes.Status404NotFound)] //implement later
+        public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken) 
         {
-            var result = await _mediator.Send(new DeleteUserCommand { Id = id });
-            return Ok(result);
+            await _mediator.Send(new DeleteUserCommand { Id = id }, cancellationToken);
+            return NoContent();
         }
     }
 }
