@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TaskFlow.BuildingBlocks.Localization;
 using TaskFlow.Modules.Organizations.Application.Features.CreateOrganization;
@@ -13,7 +14,7 @@ namespace TaskFlow.Api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class OrganizationController : ControllerBase
+    public sealed class OrganizationController : ControllerBase
     {
         private readonly IMediator _mediator;
 
@@ -27,32 +28,42 @@ namespace TaskFlow.Api.Controllers
         [ProducesResponseType(typeof(CreateOrganizationResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]   
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<CreateOrganizationResponse>> Create(CreateOrganizationCommand command,CancellationToken cancellationToken)
+        public async Task<ActionResult<CreateOrganizationResponse>> Post(CreateOrganizationCommand command,CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(command,cancellationToken);
-            return Ok(response);
-
-            //return CreatedAtAction(nameof(CreateOrganization),new { id = response.Id },response);
+            var result = await _mediator.Send(command, cancellationToken);
+            return StatusCode(StatusCodes.Status201Created, result);
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(List<GetOrganizationsResponse>), StatusCodes.Status200OK)]        
+        [ProducesResponseType(typeof(List<GetOrganizationsResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<List<GetOrganizationsResponse>>> Get(CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetOrganizationsQuery(),cancellationToken);
-            return Ok(response);
+            var result = await _mediator.Send(new GetOrganizationsQuery(),cancellationToken);
+            return Ok(result);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<UpdateOrganizationResponse>> Put(Guid id, UpdateOrganizationCommand request) 
+       
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(typeof(UpdateOrganizationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<UpdateOrganizationResponse>> Put(Guid id, UpdateOrganizationCommand request, CancellationToken cancellationToken) 
         {
             if (id != request.Id)
                 return BadRequest(ErrorKeys.IdMismatched);
-            var result = await _mediator.Send(request);
+            var result = await _mediator.Send(request,cancellationToken);
             return Ok(result);
         }
 
         [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(Guid id,CancellationToken cancellationToken)
         {
             await _mediator.Send(new DeactivateOrganizationCommand(id),cancellationToken);

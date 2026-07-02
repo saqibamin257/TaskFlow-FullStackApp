@@ -40,45 +40,7 @@ namespace TaskFlow.BuildingBlocks.Presentation.Middleware
 
                 await HandleExceptionAsync(context, exception);
             }
-        }
-        //private async Task HandleExceptionAsync(HttpContext context, Exception exception)
-        //{
-        //    context.Response.ContentType = "application/json";
-        //    switch (exception)
-        //    {
-        //        case ValidationException validationException:
-        //            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-
-        //            var localizationService = context.RequestServices
-        //                                     .GetRequiredService<ILocalizationService>();
-
-        //            var validationResponse =
-        //                new ValidationErrorResponse
-        //                {
-        //                    Errors = validationException.Errors
-        //                    .Select(error => new ValidationError
-        //                    {
-        //                        Field = error.PropertyName,
-        //                        Code = error.ErrorMessage,
-        //                        Message = localizationService.GetString(error.ErrorMessage)
-        //                    })
-        //                    .ToList()
-        //                };
-
-        //            await context.Response.WriteAsync(JsonSerializer.Serialize(validationResponse));
-        //            break;
-
-        //        default:
-        //            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        //            var response = new ErrorResponse
-        //            {
-        //                Error = "internal.server.error"
-        //            };
-        //            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
-        //            break;
-        //    }
-        //}
-
+        }        
         private async Task HandleExceptionAsync(HttpContext context,Exception exception)
         {
             context.Response.ContentType = "application/json";
