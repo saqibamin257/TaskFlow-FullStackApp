@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
+using Scalar.AspNetCore;
 using TaskFlow.Api.Extensions;
 using TaskFlow.BuildingBlocks;
 using TaskFlow.BuildingBlocks.Application.Behaviors;
@@ -80,6 +82,17 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    //app.MapScalarApiReference();
+    app.MapScalarApiReference(options =>
+    {
+        options.Title = "TaskFlow API";
+
+        options.Theme = ScalarTheme.BluePlanet;
+
+        options.DefaultHttpClient = new KeyValuePair<ScalarTarget, ScalarClient>(ScalarTarget.CSharp, ScalarClient.HttpClient);
+
+        options.ShowSidebar = true;
+    });
 }
 app.UseCors("AllowAll");
 
