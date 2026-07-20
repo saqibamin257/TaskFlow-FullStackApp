@@ -15,7 +15,7 @@ import { RememberMe } from "./RememberMe";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginFormData } from "../schemas/login-schema";
-import { authService } from "../api/auth.services";
+import { authService } from "../api/auth.service";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

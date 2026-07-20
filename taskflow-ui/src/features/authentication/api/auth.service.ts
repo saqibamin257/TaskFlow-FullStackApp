@@ -7,6 +7,9 @@ export const authService = {
     const response = await api.post<LoginResponse>(
       "/Authentication/login",
       request,
+      {
+        skipAuth: true,
+      },
     );
 
     authStorage.storeAccessToken(response.data.accessToken, request.rememberMe);
