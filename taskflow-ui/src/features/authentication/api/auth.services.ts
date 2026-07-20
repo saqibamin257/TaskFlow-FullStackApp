@@ -1,5 +1,6 @@
 import api from "@/lib/axios";
 import type { LoginRequest, LoginResponse } from "./auth.types";
+import { authStorage } from "../storage/auth.storage";
 
 export const authService = {
   async login(request: LoginRequest): Promise<void> {
@@ -8,6 +9,6 @@ export const authService = {
       request,
     );
 
-    localStorage.setItem("accessToken", response.data.accessToken);
+    authStorage.storeAccessToken(response.data.accessToken, request.rememberMe);
   },
 };
