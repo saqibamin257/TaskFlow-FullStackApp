@@ -15,8 +15,13 @@ import { RememberMe } from "./RememberMe";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginFormData } from "../schemas/login-schema";
+import { authService } from "../api/auth.services";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export function LoginForm() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     control,
@@ -31,17 +36,25 @@ export function LoginForm() {
       rememberMe: false,
     },
   });
-
+  const router = useRouter();
   const email = watch("email");
   const password = watch("password");
-
   const canLogin = email.length > 0 && password.length > 0;
 
-  console.count("LoginForm Render");
-  console.log("Errors:", errors);
-
-  const onSubmit = (data: LoginFormData) => {
-    console.log(data);
+  const onSubmit = async (data: LoginFormData) => {
+    // because LoginFormData and LoginRequest have same input variables names and types, so mapping is not required.
+    try {
+      setIsLoading(true);
+      await authService.login(data);
+      router.push("/dashboard");
+    } catch (error) {
+      console.error(error);
+      // Later:
+      // show toast
+      // show inline message
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -99,8 +112,12 @@ export function LoginForm() {
       </div>
 
       {/* Submit */}
-      <Button type="submit" className="w-full">
-        Sign In
+      <Button
+        type="submit"
+        className="w-full"
+        disabled={!canLogin || isLoading}
+      >
+        {isLoading ? "Signing In..." : "Sign In"}
       </Button>
     </form>
   );
