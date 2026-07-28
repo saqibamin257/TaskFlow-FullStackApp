@@ -15,12 +15,12 @@ namespace TaskFlow.BuildingBlocks.Security.Services
     public class TokenValidator : ITokenValidator
     {
         private readonly IConfiguration _configuration;
-        private readonly ILogger _logger;
+       
 
-        public TokenValidator(IConfiguration configuration, ILogger logger)
+        public TokenValidator(IConfiguration configuration)
         {
             _configuration = configuration;
-            _logger = logger;
+           
         }
 
         public ClaimsPrincipal? Validate(string token)
@@ -85,7 +85,7 @@ namespace TaskFlow.BuildingBlocks.Security.Services
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "PASETO token validation failed.");
+               
                 return null;
             }
         }
