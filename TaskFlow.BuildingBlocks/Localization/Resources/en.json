@@ -10,7 +10,13 @@
   "validation.organization.name.required": "Organization name is required",
   "validation.organization.slug.required": "Organization slug is required",
 
-  //errors
+  //----------------- errors-----------------------------//
+
+  //User
+  "error.user.notfound": "User not found",
+
+
+  //Organization
   "error.organization.notfound": "Organization not found",
   "error.organization.slug.exists": "Organization slug already exists",
   "error.organization.name.exists": "Organization name already exists",

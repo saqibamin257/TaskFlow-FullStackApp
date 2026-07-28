@@ -6,6 +6,7 @@ using TaskFlow.BuildingBlocks.Localization;
 using TaskFlow.BuildingBlocks.Security.Abstraction;
 using TaskFlow.Modules.Users.Application.Features.CreateUser;
 using TaskFlow.Modules.Users.Application.Features.DeleteUser;
+using TaskFlow.Modules.Users.Application.Features.GetCurrentUser;
 using TaskFlow.Modules.Users.Application.Features.GetUsers;
 using TaskFlow.Modules.Users.Application.Features.UpdateUser;
 
@@ -65,6 +66,17 @@ namespace TaskFlow.Api.Controllers
         {
             await _mediator.Send(new DeleteUserCommand { Id = id }, cancellationToken);
             return NoContent();
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        [ProducesResponseType(typeof(GetCurrentUserResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<GetCurrentUserResponse>> Me(CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new GetCurrentUserQuery(),cancellationToken);
+            return Ok(result);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Paseto;
 using Paseto.Builder;
 using Paseto.Cryptography.Key;
@@ -14,11 +15,12 @@ namespace TaskFlow.BuildingBlocks.Security.Services
     public class TokenValidator : ITokenValidator
     {
         private readonly IConfiguration _configuration;
+        private readonly ILogger _logger;
 
-        public TokenValidator(
-            IConfiguration configuration)
+        public TokenValidator(IConfiguration configuration, ILogger logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         public ClaimsPrincipal? Validate(string token)
@@ -33,6 +35,15 @@ namespace TaskFlow.BuildingBlocks.Security.Services
                     new PasetoSymmetricKey(
                         keyBytes,
                         new Version4());
+                var validationParameters = new PasetoTokenValidationParameters
+                {
+                    ValidateLifetime = true,
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+
+                    ValidIssuer = _configuration["Token:Issuer"],
+                    ValidAudience = _configuration["Token:Audience"]
+                };
 
                 var validationResult =
                     new PasetoBuilder()
@@ -40,7 +51,7 @@ namespace TaskFlow.BuildingBlocks.Security.Services
                             ProtocolVersion.V4,
                             Purpose.Local)
                         .WithKey(key)
-                        .Decode(token);
+                        .Decode(token,validationParameters);
 
                 var claims = new List<Claim>
                 {
@@ -72,8 +83,9 @@ namespace TaskFlow.BuildingBlocks.Security.Services
 
                 return new ClaimsPrincipal(identity);
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogWarning(ex, "PASETO token validation failed.");
                 return null;
             }
         }
