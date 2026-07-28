@@ -16,18 +16,26 @@ import { Input } from "@/components/ui/input";
  * Change Password
  */
 
-export function PasswordInput() {
+type PasswordInputProps = {
+  readonly value: string;
+  readonly onChange: (value: string) => void;
+};
+
+export function PasswordInput({ value, onChange }: PasswordInputProps) {
   const [showPassword, setShowPassword] = useState(false);
+
   return (
     <div className="relative">
       <Input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         type={showPassword ? "text" : "password"}
         placeholder="Enter your password"
       />
 
       <button
         type="button"
-        onClick={() => setShowPassword(!showPassword)}
+        onClick={() => setShowPassword((previous) => !previous)} //recommended React patterent whenever the next state depends on previous state.
         className="
         absolute
         right-3

@@ -10,7 +10,12 @@
   "validation.organization.name.required": "ادارے کا نام لازمی ہے",
   "validation.organization.slug.required": "ادارے کا منفرد نام لازمی ہے",
 
-  //errors
+  //-------------------------  errors-----------------------------------//
+
+  //user
+  "error.user.notfound": "درخواست کردہ صارف موجود نہیں ہے",
+
+  //organization
   "error.organization.notfound": "ادارہ موجود نہیں",
   "error.organization.slug.exists": "ادارے کا سلاگ پہلے سے موجود ہے",
   "error.organization.name.exists": "ادارے کا نام پہلے سے موجود ہے",

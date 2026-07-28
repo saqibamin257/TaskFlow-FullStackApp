@@ -6,6 +6,11 @@ namespace TaskFlow.BuildingBlocks.Localization
 {
     public static class ErrorKeys
     {
+        //user
+        public const string UserNotFound =
+           "error.user.notfound";
+
+
         //organization
         public const string OrganizationNotFound =
             "error.organization.notfound";
