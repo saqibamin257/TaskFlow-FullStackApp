@@ -52,7 +52,8 @@ export function LoginForm() {
       // Later:
       // show toast
       // show inline message
-    } finally {
+    } 
+    finally {
       setIsLoading(false);
     }
   };
