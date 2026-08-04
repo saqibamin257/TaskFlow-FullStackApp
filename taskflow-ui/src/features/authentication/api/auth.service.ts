@@ -17,9 +17,9 @@ export const authService = {
   },
 
   // function-2
+  
   logout() {
     authStorage.removeAccessToken();
-
     window.location.href = "/login";
   },
 
