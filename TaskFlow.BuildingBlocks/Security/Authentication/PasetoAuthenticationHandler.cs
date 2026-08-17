@@ -13,12 +13,7 @@ namespace TaskFlow.BuildingBlocks.Security.Authentication
     public class PasetoAuthenticationHandler:AuthenticationHandler<AuthenticationSchemeOptions>
     {
         private readonly ITokenValidator _tokenValidator;
-        public PasetoAuthenticationHandler(
-        IOptionsMonitor<AuthenticationSchemeOptions> options,
-        ILoggerFactory logger,
-        UrlEncoder encoder,
-        ITokenValidator tokenValidator)
-        : base(options, logger, encoder)
+        public PasetoAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ITokenValidator tokenValidator) : base(options, logger, encoder)
         {
             _tokenValidator = tokenValidator;
         }

@@ -43,7 +43,19 @@ namespace TaskFlow.Api.Controllers
             return Ok(result);
         }
 
-       
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(typeof(GetOrganizationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<GetOrganizationResponse>> Get(Guid id,CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new GetOrganizationQuery(id), cancellationToken);
+            return Ok(result);
+        }
+
+
         [HttpPut("{id:guid}")]
         [ProducesResponseType(typeof(UpdateOrganizationResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
