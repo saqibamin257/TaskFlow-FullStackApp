@@ -1,4 +1,4 @@
-import { CreateOrganizationForm } from "@/features/organizations/components/create-organization-form";
+import { CreateOrganizationDialog } from "@/features/organizations/components/create-organization-dialog";
 import { OrganizationList } from "@/features/organizations/components/organization-list";
 
 export default function OrganizationsPage() {
@@ -15,7 +15,7 @@ export default function OrganizationsPage() {
       <div className="max-w-xl rounded-lg border p-6">
         <h2 className="mb-5 text-lg font-semibold">Create Organization</h2>
 
-        <CreateOrganizationForm />
+        <CreateOrganizationDialog />
       </div>
 
       <OrganizationList />

@@ -10,7 +10,11 @@ import {
 } from "../schemas/organization-schema";
 import type { CreateOrganizationRequest } from "../types/organization.types";
 
-export function CreateOrganizationForm() {
+interface OrganizationFormProps {
+  onSuccess?: () => void;
+}
+
+export function CreateOrganizationForm({ onSuccess }: OrganizationFormProps) {
   const createOrganization = useCreateOrganization();
 
   const {
@@ -39,6 +43,7 @@ export function CreateOrganizationForm() {
     createOrganization.mutate(request, {
       onSuccess: () => {
         reset();
+        onSuccess?.();
       },
     });
   };
