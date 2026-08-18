@@ -15,6 +15,7 @@ export const organizationService = {
 
   //Get Single Organization
   async getOrganizationById(id: string): Promise<Organization> {
+    console.log("get-Organization");
     const response = await api.get<Organization>(`/organization/${id}`);
     return response.data;
   },
