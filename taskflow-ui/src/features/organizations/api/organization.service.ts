@@ -7,20 +7,20 @@ import type {
 } from "../types/organization.types";
 
 export const organizationService = {
-  // Get all organizations
+  // Get all organizations, getOrganizations()
   async getOrganizations(): Promise<Organization[]> {
     const response = await api.get<Organization[]>("/organization");
     return response.data;
   },
 
-  //Get Single Organization
+  //Get Single Organization, getOrganization(id)
   async getOrganizationById(id: string): Promise<Organization> {
     console.log("get-Organization");
     const response = await api.get<Organization>(`/organization/${id}`);
     return response.data;
   },
 
-  // Create a new Organization
+  // Create a new Organization, createOrganization(request)
   async createOrganization(
     request: CreateOrganizationRequest,
   ): Promise<CreateOrganizationResponse> {
@@ -31,18 +31,19 @@ export const organizationService = {
     return response.data;
   },
 
-  // Update Organization
+  // Update Organization, updateOrganization(id, request)
   async updateOrganization(
+    id: string,
     request: UpdateOrganizationRequest,
   ): Promise<Organization> {
     const response = await api.put<Organization>(
-      `/organization/${request.id}`,
+      `/organization/${id}`,
       request,
     );
     return response.data;
   },
 
-  // Delete an organization
+  // Delete an organization, deleteOrganization(id)
   async deleteOrganization(id: string): Promise<void> {
     await api.delete(`/organization/${id}`);
   },

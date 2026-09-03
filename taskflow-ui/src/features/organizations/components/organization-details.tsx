@@ -2,24 +2,25 @@
 
 import { ArrowLeft, Building2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { useOrganization } from "../hooks/use-organization";
+import { EditOrganizationDialog } from "./edit-organization-dialog";
+import { DeleteOrganizationDialog } from "./delete-organization-dialog";
 
 interface OrganizationDetailsProps {
   id: string;
 }
 
-export function OrganizationDetails({
-  id,
-}: OrganizationDetailsProps) {
+export function OrganizationDetails({ id }: OrganizationDetailsProps) {
+  const router = useRouter();
+
   const { data: organization, isLoading, isError } = useOrganization(id);
 
   if (isLoading) {
     return (
       <div className="rounded-xl border p-6">
-        <p className="text-muted-foreground">
-          Loading organization...
-        </p>
+        <p className="text-muted-foreground">Loading organization...</p>
       </div>
     );
   }
@@ -27,9 +28,7 @@ export function OrganizationDetails({
   if (isError || !organization) {
     return (
       <div className="rounded-xl border p-6">
-        <p className="text-destructive">
-          Unable to load organization.
-        </p>
+        <p className="text-destructive">Unable to load organization.</p>
 
         <Link
           href="/organizations"
@@ -62,9 +61,7 @@ export function OrganizationDetails({
 
           <div className="flex-1">
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-semibold">
-                {organization.name}
-              </h1>
+              <h1 className="text-2xl font-semibold">{organization.name}</h1>
 
               <span
                 className={`rounded-full px-2.5 py-1 text-xs font-medium ${
@@ -86,49 +83,44 @@ export function OrganizationDetails({
 
       {/* Organization Information */}
       <div className="rounded-xl border bg-card p-6">
-        <h2 className="text-lg font-semibold">
-          Organization Information
-        </h2>
+        <h2 className="text-lg font-semibold">Organization Information</h2>
+        <div className="flex items-center gap-2">
+          <EditOrganizationDialog organization={organization} />
+
+          <DeleteOrganizationDialog
+            organizationId={organization.id}
+            organizationName={organization.name}
+            onSuccess={() => {
+              router.push("/organizations");
+            }}
+          />
+        </div>
 
         <div className="mt-6 grid gap-6 sm:grid-cols-2">
           <div>
-            <p className="text-sm text-muted-foreground">
-              Slug
-            </p>
-            <p className="mt-1 font-medium">
-              {organization.slug}
-            </p>
+            <p className="text-sm text-muted-foreground">Slug</p>
+            <p className="mt-1 font-medium">{organization.slug}</p>
           </div>
 
           <div>
-            <p className="text-sm text-muted-foreground">
-              Owner ID
-            </p>
+            <p className="text-sm text-muted-foreground">Owner ID</p>
             <p className="mt-1 break-all font-medium">
               {organization.ownerUserId}
             </p>
           </div>
 
           <div>
-            <p className="text-sm text-muted-foreground">
-              Created
-            </p>
+            <p className="text-sm text-muted-foreground">Created</p>
             <p className="mt-1 font-medium">
-              {new Date(
-                organization.createdAtUTC
-              ).toLocaleString()}
+              {new Date(organization.createdAtUTC).toLocaleString()}
             </p>
           </div>
 
           <div>
-            <p className="text-sm text-muted-foreground">
-              Updated
-            </p>
+            <p className="text-sm text-muted-foreground">Updated</p>
             <p className="mt-1 font-medium">
               {organization.updatedAtUTC
-                ? new Date(
-                    organization.updatedAtUTC
-                  ).toLocaleString()
+                ? new Date(organization.updatedAtUTC).toLocaleString()
                 : "Never"}
             </p>
           </div>
