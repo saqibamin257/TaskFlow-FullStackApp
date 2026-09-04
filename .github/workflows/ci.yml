@@ -18,7 +18,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 10.0.x
 
       - name: Restore Dependencies
         run: dotnet restore TaskFlow.slnx
@@ -27,7 +27,7 @@ jobs:
         run: dotnet build TaskFlow.slnx --no-restore --configuration Release
 
       - name: Test
-        run: dotnet test TaskFlow.slnx --no-build --verbosity normal
+        run: dotnet test TaskFlow.slnx --no-build --configuration Release --verbosity normal
 
   build-frontend:
     name: Build React App
@@ -41,11 +41,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.20.2
+          cache: npm
+          cache-dependency-path: taskflow-ui/package-lock.json
 
       - name: Install Dependencies
         run: |
           cd taskflow-ui
-          npm install
+          npm ci
 
       - name: Build
         run: |

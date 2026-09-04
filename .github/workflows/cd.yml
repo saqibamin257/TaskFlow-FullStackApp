@@ -1,0 +1,123 @@
+name: Production CD
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+
+    # This connects the job to your GitHub Production environment.
+    # Production approval will happen before this job proceeds.
+    environment:
+      name: production
+
+    steps:
+
+      # ------------------------------
+      # Checkout Production Code
+      # ------------------------------
+      - name: Checkout Main Branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+
+      # ------------------------------
+      # Setup .NET 10
+      # ------------------------------
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+
+      # ------------------------------
+      # Restore Dependencies
+      # ------------------------------
+      - name: Restore Dependencies
+        run: dotnet restore TaskFlow.slnx
+
+
+      # ------------------------------
+      # Build Application
+      # ------------------------------
+      - name: Build Application
+        run: dotnet build TaskFlow.slnx --no-restore --configuration Release
+
+
+      # ------------------------------
+      # Run Tests
+      # ------------------------------
+      - name: Run Tests
+        run: dotnet test TaskFlow.slnx --no-build --configuration Release --verbosity normal
+
+
+      # ------------------------------
+      # Install EF Core CLI
+      # ------------------------------
+      - name: Install EF Core Tools
+        run: dotnet tool install --global dotnet-ef --version 10.*
+
+
+      # ------------------------------
+      # Add EF Core Tools to PATH
+      # ------------------------------
+      - name: Add EF Core Tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+
+      # ------------------------------
+      # Run Users Module Migrations
+      # ------------------------------
+      - name: Apply Users Database Migrations
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+        run: |
+          dotnet ef database update \
+            --project TaskFlow.Modules/TaskFlow.Modules.csproj \
+            --startup-project TaskFlow.Api/TaskFlow.Api.csproj \
+            --context UsersDbContext \
+            --configuration Release
+
+
+      # ------------------------------
+      # Run Organizations Module Migrations
+      # ------------------------------
+      - name: Apply Organizations Database Migrations
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+        run: |
+          dotnet ef database update \
+            --project TaskFlow.Modules/TaskFlow.Modules.csproj \
+            --startup-project TaskFlow.Api/TaskFlow.Api.csproj \
+            --context OrganizationsDbContext \
+            --configuration Release
+
+      # ------------------------------
+      # Publish API
+      # ------------------------------
+      - name: Publish API
+        run: |
+          dotnet publish TaskFlow.Api \
+            --configuration Release \
+            --output ./publish
+
+
+      # ------------------------------
+      # Deploy API to Azure
+      # ------------------------------
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
