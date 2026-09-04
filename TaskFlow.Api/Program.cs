@@ -79,7 +79,7 @@ builder.Services.AddObservability(builder.Configuration); //open telemetry signo
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.MapOpenApi();
     //app.MapScalarApiReference();

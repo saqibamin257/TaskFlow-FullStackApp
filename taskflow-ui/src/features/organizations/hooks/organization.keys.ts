@@ -1,5 +1,5 @@
 export const organizationKeys = {
-  all: ["organizations"] as const,
+  all: ["organization"] as const,
 
   list: () => [...organizationKeys.all, "list"] as const,
 

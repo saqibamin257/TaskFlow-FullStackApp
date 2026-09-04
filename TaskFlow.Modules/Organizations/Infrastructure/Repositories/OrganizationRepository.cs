@@ -17,7 +17,7 @@ namespace TaskFlow.Modules.Organizations.Infrastructure.Repositories
         public async Task<List<Organization>> GetAccessibleOrganizationsAsync(Guid userId, CancellationToken cancellationToken = default)
         {
             return await _context.Organizations.AsNoTracking()
-                                               .Where(x => x.OwnerUserId == userId)
+                                               .Where(x => x.OwnerUserId == userId && x.IsActive==true)
                                                .OrderBy(x => x.Name)
                                                .ToListAsync(cancellationToken);
         }
@@ -26,7 +26,7 @@ namespace TaskFlow.Modules.Organizations.Infrastructure.Repositories
             Guid id,
             CancellationToken cancellationToken = default)
         {
-            return await _context.Organizations.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return await _context.Organizations.FirstOrDefaultAsync(x => x.Id == id && x.IsActive == true, cancellationToken);
         }
 
         public async Task<Organization?> GetBySlugAsync(
@@ -67,7 +67,7 @@ namespace TaskFlow.Modules.Organizations.Infrastructure.Repositories
             var normalizedSlug = slug.Trim().ToLowerInvariant();
 
             return await _context.Organizations
-                    .AnyAsync(x => x.Slug == normalizedSlug,cancellationToken);
+                    .AnyAsync(x => x.Slug == normalizedSlug ,cancellationToken);
         }
 
         public async Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken = default)
