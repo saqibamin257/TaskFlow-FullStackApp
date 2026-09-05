@@ -50,6 +50,9 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.0.x
+           
+      - name: Restore Dependencies
+        run: dotnet restore TaskFlow.slnx
 
       - name: Install EF Core Tools
         run: dotnet tool install --global dotnet-ef --version 10.*
