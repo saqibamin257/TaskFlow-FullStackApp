@@ -1,0 +1,82 @@
+name: Test Users Database Migration
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  migrate:
+    name: Apply Users Migration
+    runs-on: ubuntu-latest
+
+    environment:
+      name: production
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Get Runner IP
+        id: ip
+        run: |
+          RUNNER_IP=$(curl -4 -s https://api.ipify.org)
+
+          echo "GitHub Actions Runner IP: $RUNNER_IP"
+
+          if [ -z "$RUNNER_IP" ]; then
+            echo "Failed to determine runner IP."
+            exit 1
+          fi
+
+          echo "ip=$RUNNER_IP" >> "$GITHUB_OUTPUT"
+
+      - name: Add Runner IP to Azure SQL Firewall
+        run: |
+          az sql server firewall-rule create \
+            --resource-group rg-taskflow \
+            --server taskflow-sqlserver-saqib \
+            --name GitHubActionsRunner \
+            --start-ip-address "${{ steps.ip.outputs.ip }}" \
+            --end-ip-address "${{ steps.ip.outputs.ip }}"
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install EF Core Tools
+        run: dotnet tool install --global dotnet-ef --version 10.*
+
+      - name: Add EF Tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+
+      - name: Generate Users Migration Bundle
+        run: |
+          dotnet ef migrations bundle \
+            --project TaskFlow.Modules/TaskFlow.Modules.csproj \
+            --startup-project TaskFlow.Api/TaskFlow.Api.csproj \
+            --context UsersDbContext \
+            --configuration Release \
+            --output ./users-efbundle
+
+      - name: Apply Users Migration
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+        run: |
+          chmod +x ./users-efbundle
+          ./users-efbundle --connection "$ConnectionStrings__DefaultConnection"
+
+      - name: Remove Runner IP from Azure SQL Firewall
+        if: always()
+        run: |
+          az sql server firewall-rule delete \
+            --resource-group rg-taskflow \
+            --server taskflow-sqlserver-saqib \
+            --name GitHubActionsRunner
