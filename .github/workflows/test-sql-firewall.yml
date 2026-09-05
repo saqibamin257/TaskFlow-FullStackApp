@@ -59,4 +59,4 @@ jobs:
             --resource-group rg-taskflow \
             --server taskflow-sqlserver-saqib \
             --name GitHubActionsRunner \
-            --yes
+            
