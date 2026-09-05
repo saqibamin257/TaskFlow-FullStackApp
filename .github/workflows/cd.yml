@@ -74,6 +74,15 @@ jobs:
       - name: Add EF Core Tools to PATH
         run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
+      # ------------------------------
+      # Add EF Core Tools to PATH
+      # ------------------------------
+      - name: Verify SQL Connection Configuration
+        env:
+          CONNECTION_STRING: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+        run: |
+            echo "$CONNECTION_STRING" | sed 's/Password=[^;]*/Password=***/'
+
 
       # ------------------------------
       # Run Users Module Migrations
