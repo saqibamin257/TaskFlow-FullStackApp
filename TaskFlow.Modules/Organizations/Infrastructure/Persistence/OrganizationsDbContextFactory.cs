@@ -29,7 +29,14 @@ public class OrganizationsDbContextFactory : IDesignTimeDbContextFactory<Organiz
 
         var optionsBuilder = new DbContextOptionsBuilder<OrganizationsDbContext>();
 
-        optionsBuilder.UseSqlServer(connectionString);
+        //optionsBuilder.UseSqlServer(connectionString);
+        optionsBuilder.UseSqlServer(
+                connectionString,
+                sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure();
+                });
+
 
         return new OrganizationsDbContext(optionsBuilder.Options);
     }

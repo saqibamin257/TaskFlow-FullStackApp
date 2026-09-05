@@ -33,7 +33,14 @@ namespace TaskFlow.Modules.Users.Infrastructure.Persistence
 
             var optionsBuilder = new DbContextOptionsBuilder<UsersDbContext>();
 
-            optionsBuilder.UseSqlServer(connectionString);
+            //optionsBuilder.UseSqlServer(connectionString);
+
+            optionsBuilder.UseSqlServer(
+                connectionString,
+                sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure();
+                });
 
             return new UsersDbContext(optionsBuilder.Options);
         }
