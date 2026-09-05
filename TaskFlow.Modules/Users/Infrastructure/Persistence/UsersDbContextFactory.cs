@@ -12,15 +12,26 @@ namespace TaskFlow.Modules.Users.Infrastructure.Persistence
     : IDesignTimeDbContextFactory<UsersDbContext>
     {
         public UsersDbContext CreateDbContext(string[] args)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<UsersDbContext>();
-
-            IConfigurationRoot configuration = new ConfigurationBuilder()
+        {           
+            
+            var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+            if (string.IsNullOrWhiteSpace(connectionString)) 
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.json", optional: true)
                 .Build();
 
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+                connectionString = configuration.GetConnectionString("DefaultConnection");
+            }
+
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new InvalidOperationException(
+                    "DefaultConnection connection string was not found.");
+            }
+
+            var optionsBuilder = new DbContextOptionsBuilder<UsersDbContext>();
 
             optionsBuilder.UseSqlServer(connectionString);
 

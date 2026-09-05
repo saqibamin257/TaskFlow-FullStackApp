@@ -8,21 +8,29 @@ public class OrganizationsDbContextFactory : IDesignTimeDbContextFactory<Organiz
 {
     public OrganizationsDbContext CreateDbContext(string[] args)
     {
-        var optionsBuilder =
-            new DbContextOptionsBuilder<OrganizationsDbContext>();
+        var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+        
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            IConfigurationRoot configuration =
+                        new ConfigurationBuilder()
+                            .SetBasePath(Directory.GetCurrentDirectory())
+                            .AddJsonFile("appsettings.json")
+                            .Build();
 
-        IConfigurationRoot configuration =
-            new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
+            connectionString = configuration.GetConnectionString("DefaultConnection");
+        }
 
-        var connectionString =
-            configuration.GetConnectionString("DefaultConnection");
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new InvalidOperationException(
+                "DefaultConnection connection string was not found.");
+        }
+
+        var optionsBuilder = new DbContextOptionsBuilder<OrganizationsDbContext>();
 
         optionsBuilder.UseSqlServer(connectionString);
 
-        return new OrganizationsDbContext(
-            optionsBuilder.Options);
+        return new OrganizationsDbContext(optionsBuilder.Options);
     }
 }
