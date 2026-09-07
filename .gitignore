@@ -12,3 +12,7 @@ dist/
 # IDE
 .vs/
 .vscode/
+
+# EF bundles
+*-efbundle
+*-efbundle.exe

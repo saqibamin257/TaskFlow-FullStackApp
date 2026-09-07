@@ -1,0 +1,178 @@
+name: Production CD
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+
+    environment:
+      name: production
+
+    steps:
+      - name: Checkout Main Branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      # --------------------------------------------------
+      # Azure Authentication
+      # --------------------------------------------------
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # --------------------------------------------------
+      # Get GitHub Runner Public IP
+      # --------------------------------------------------
+
+      - name: Get Runner IP
+        id: ip
+        run: |
+          RUNNER_IP=$(curl -4 -s https://api.ipify.org)
+
+          echo "GitHub Actions Runner IP: $RUNNER_IP"
+
+          if [ -z "$RUNNER_IP" ]; then
+            echo "Failed to determine runner IP."
+            exit 1
+          fi
+
+          echo "ip=$RUNNER_IP" >> "$GITHUB_OUTPUT"
+
+      # --------------------------------------------------
+      # Temporarily Allow GitHub Runner in Azure SQL
+      # --------------------------------------------------
+
+      - name: Add Runner IP to Azure SQL Firewall
+        run: |
+          az sql server firewall-rule create \
+            --resource-group rg-taskflow \
+            --server taskflow-sqlserver-saqib \
+            --name GitHubActionsRunner \
+            --start-ip-address "${{ steps.ip.outputs.ip }}" \
+            --end-ip-address "${{ steps.ip.outputs.ip }}"
+
+      # --------------------------------------------------
+      # Setup .NET
+      # --------------------------------------------------
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      # --------------------------------------------------
+      # Restore
+      # --------------------------------------------------
+
+      - name: Restore Dependencies
+        run: dotnet restore TaskFlow.slnx
+
+      # --------------------------------------------------
+      # Build
+      # --------------------------------------------------
+
+      - name: Build Application
+        run: dotnet build TaskFlow.slnx --no-restore --configuration Release
+
+      # --------------------------------------------------
+      # Test
+      # --------------------------------------------------
+
+      - name: Run Tests
+        run: dotnet test TaskFlow.slnx --no-build --configuration Release --verbosity normal
+
+      # --------------------------------------------------
+      # EF Core Tools
+      # --------------------------------------------------
+
+      - name: Install EF Core Tools
+        run: dotnet tool install --global dotnet-ef --version 10.*
+
+      - name: Add EF Tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+
+      # --------------------------------------------------
+      # Users Database Migration
+      # --------------------------------------------------
+
+      - name: Generate Users Migration Bundle
+        run: |
+          dotnet ef migrations bundle \
+            --project TaskFlow.Modules/TaskFlow.Modules.csproj \
+            --startup-project TaskFlow.Api/TaskFlow.Api.csproj \
+            --context UsersDbContext \
+            --configuration Release \
+            --output ./users-efbundle
+
+      - name: Apply Users Database Migration
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+        run: |
+          chmod +x ./users-efbundle
+          ./users-efbundle --connection "$ConnectionStrings__DefaultConnection"
+
+      # --------------------------------------------------
+      # Organizations Database Migration
+      # --------------------------------------------------
+
+      - name: Generate Organizations Migration Bundle
+        run: |
+          dotnet ef migrations bundle \
+            --project TaskFlow.Modules/TaskFlow.Modules.csproj \
+            --startup-project TaskFlow.Api/TaskFlow.Api.csproj \
+            --context OrganizationsDbContext \
+            --configuration Release \
+            --output ./organizations-efbundle
+
+      - name: Apply Organizations Database Migration
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+        run: |
+          chmod +x ./organizations-efbundle
+          ./organizations-efbundle --connection "$ConnectionStrings__DefaultConnection"
+
+      # --------------------------------------------------
+      # Publish API
+      # --------------------------------------------------
+
+      - name: Publish API
+        run: |
+          dotnet publish TaskFlow.Api \
+            --configuration Release \
+            --output ./publish
+
+      # --------------------------------------------------
+      # Deploy API to Azure App Service
+      # --------------------------------------------------
+
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
+
+      # --------------------------------------------------
+      # Always Remove Temporary SQL Firewall Rule
+      # --------------------------------------------------
+
+      - name: Remove Runner IP from Azure SQL Firewall
+        if: always()
+        run: |
+          az sql server firewall-rule delete \
+            --resource-group rg-taskflow \
+            --server taskflow-sqlserver-saqib \
+            --name GitHubActionsRunner
