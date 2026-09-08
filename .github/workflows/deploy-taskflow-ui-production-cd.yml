@@ -11,6 +11,10 @@ jobs:
     name: Build and Deploy Production
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: taskflow-ui
+
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
@@ -20,6 +24,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: taskflow-ui/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -38,6 +43,6 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PRODUCTION }}
           action: upload
-          app_location: out
+          app_location: taskflow-ui/out
           output_location: ""
           skip_app_build: true
