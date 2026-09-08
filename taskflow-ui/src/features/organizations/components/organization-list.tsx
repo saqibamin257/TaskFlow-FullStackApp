@@ -37,7 +37,7 @@ export function OrganizationList() {
       {organizations.map((organization) => (
         <Link
           key={organization.id}
-          href={`/organizations/${organization.id}`}
+          href={`/organizations/details?id=${organization.id}`}
           className="block"
         >
           <div key={organization.id} className="rounded-lg border p-5">
