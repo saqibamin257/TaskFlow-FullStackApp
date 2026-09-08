@@ -31,6 +31,8 @@ jobs:
 
       - name: Build static application
         run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL_PRODUCTION }}
 
       - name: Verify static output
         run: |
