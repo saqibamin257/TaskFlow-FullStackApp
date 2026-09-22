@@ -28,7 +28,7 @@ namespace TaskFlow.Modules.Users.Application.Features.GetCurrentUser
             {
                 throw new ValidationException(ErrorKeys.UserNotFound);
             }
-            return new GetCurrentUserResponse(user.Id,user.Name,user.Email,user.Role,user.TenantId);
+            return new GetCurrentUserResponse(user.Id,user.FirstName, user.LastName,user.Email);
         }
     }
 }

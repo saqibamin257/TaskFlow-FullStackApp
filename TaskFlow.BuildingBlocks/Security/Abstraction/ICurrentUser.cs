@@ -9,11 +9,6 @@ namespace TaskFlow.BuildingBlocks.Security.Abstraction
         Guid UserId { get; }
 
         string Email { get; }
-
-        string Role { get; }
-
-        Guid TenantId { get; }
-
         bool IsAuthenticated { get; }
     }
 }

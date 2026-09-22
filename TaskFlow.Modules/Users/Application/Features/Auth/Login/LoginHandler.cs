@@ -37,9 +37,7 @@ namespace TaskFlow.Modules.Users.Application.Features.Auth.Login
                 new AuthenticatedUser
                 {
                     UserId = user.Id,
-                    Email = user.Email,
-                    Role = user.Role,
-                    TenantId = user.TenantId
+                    Email = user.Email                               
                 };
             var accessToken = _tokenProvider.Generate(authenticatedUser);
             return new LoginResponse

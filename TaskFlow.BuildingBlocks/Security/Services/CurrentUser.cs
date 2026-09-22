@@ -30,15 +30,7 @@ namespace TaskFlow.BuildingBlocks.Security.Services
 
         public string Email =>
             GetClaim(
-                ClaimTypes.Email);
-
-        public string Role =>
-            GetClaim(
-                ClaimTypes.Role);
-
-        public Guid TenantId =>
-            GetGuidClaim(
-                "tenantId");
+                ClaimTypes.Email);       
 
         private string GetClaim(
             string claimType)

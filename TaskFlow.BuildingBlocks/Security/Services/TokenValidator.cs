@@ -63,16 +63,6 @@ namespace TaskFlow.BuildingBlocks.Security.Services
                     new(
                         ClaimTypes.Email,
                         validationResult.Paseto.Payload["email"]
-                            ?.ToString() ?? string.Empty),
-
-                    new(
-                        ClaimTypes.Role,
-                        validationResult.Paseto.Payload["role"]
-                            ?.ToString() ?? string.Empty),
-
-                    new(
-                        "tenantId",
-                        validationResult.Paseto.Payload["tenantId"]
                             ?.ToString() ?? string.Empty)
                 };
 

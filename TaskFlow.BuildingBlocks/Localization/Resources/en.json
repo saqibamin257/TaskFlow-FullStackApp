@@ -3,6 +3,7 @@
   "validation.id.required": "Id is required",
   "validation.name.required": "Name is required",
   "validation.email.required": "Email is required",
+  "validation.email.alreadyexists": "Email already exists",  
   "validation.email.invalid": "Invalid email format",
   "validation.password.required": "Password is required",
   "validation.role.required": "Role is required",

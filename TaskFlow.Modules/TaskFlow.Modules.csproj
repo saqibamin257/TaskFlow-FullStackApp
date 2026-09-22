@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
     <Folder Include="Organizations\Infrastructure\Persistence\Migrations\" />
     <Folder Include="Users\Application\Mapping\" />
     <Folder Include="Users\Domain\Enums\" />

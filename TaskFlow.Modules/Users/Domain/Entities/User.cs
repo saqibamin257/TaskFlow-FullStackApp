@@ -8,47 +8,63 @@ namespace TaskFlow.Modules.Users.Domain.Entities
 {
     public class User
     {
-        public Guid Id { get; private set;}
-        public string Name { get; private set; } = string.Empty;
+        public Guid Id { get; private set;}        
+        public string FirstName { get; private set; } = string.Empty;
+        public string? LastName { get; private set; }
         public string Email { get; private set; } = string.Empty;
-        public string PasswordHash { get; private set; } = string.Empty;
-        public string Role { get; private set; } = "Member";
-        public Guid TenantId { get; private set; }
+        public string PasswordHash { get; private set; } = string.Empty;         
         public bool IsActive { get; private set; } = true;
         public DateTime CreatedAtUTC { get; private set; }
+        public DateTime? EmailVerifiedAtUTC { get; private set; }
         private User() { }
 
-        private User(string name,string email,string passwordHash,string role,Guid tenantId)
+        private User(string firstName,string lastName, string email,string passwordHash)
         {
-            SetName(name);
+            Id = Guid.CreateVersion7();
+            SetFirstName(firstName);
+            SetLastName(lastName);
             SetEmail(email);
-            PasswordHash = passwordHash;
-            Role = role;
-            TenantId = tenantId;
+            PasswordHash = passwordHash;                      
             CreatedAtUTC = DateTime.UtcNow;
             IsActive = true;
-        }        
-        public static User Create(string name, string email, string passwordHash, string role, Guid tenantId) 
-        {
-            return new User(name, email,passwordHash,role,tenantId);
         }
-        public void UpdateProfile(string name, string email) 
+        public void VerifyEmail()
         {
-            SetName(name);
+            EmailVerifiedAtUTC = DateTime.UtcNow;
+        }
+        public static User Create(string firstName, string lastName, string email, string passwordHash) 
+        {
+            return new User(firstName,lastName, email,passwordHash);
+        }
+        public void UpdateProfile(string firstName, string lastName, string email) 
+        {
+            SetFirstName(firstName);
+            SetLastName(lastName);
             SetEmail(email);            
         }
         public void DeActivate ()
         {
             IsActive = false;
         }
-        private void SetName(string name)
+        
+        private void SetFirstName(string firstName)
         {
-            if (string.IsNullOrEmpty(name)) 
+            if (string.IsNullOrEmpty(firstName))
             {
                 throw new ValidationException(
                     ValidationKeys.NameRequired);
             }
-            Name = name;
+            FirstName = firstName;
+        }
+
+        private void SetLastName(string lastName)
+        {
+            if (string.IsNullOrEmpty(lastName))
+            {
+                LastName = null;
+                return;
+            }
+            LastName = lastName;
         }
         private void SetEmail(string email)
         {
@@ -64,5 +80,7 @@ namespace TaskFlow.Modules.Users.Domain.Entities
         {
             Id = id;
         }
+
+     
     }
 }

@@ -37,10 +37,7 @@ namespace TaskFlow.BuildingBlocks.Security.Services
             .Audience(_configuration["Token:Audience"])
             .Subject(user.UserId.ToString())
             .Expiration(DateTime.UtcNow.AddMinutes( Convert.ToDouble(_configuration["Token:ExpiryMinutes"])))
-            .AddClaim("email", user.Email)
-            .AddClaim("role", user.Role)
-            .AddClaim("tenantId",
-                user.TenantId.ToString())
+            .AddClaim("email", user.Email)                   
             .Encode();
 
             return token;

@@ -15,16 +15,15 @@ namespace TaskFlow.Modules.Users.Application.Features.GetUsers
             _userRepository = userRepository;
         }
 
-        public async Task<List<GetUsersResponse>> Handle(
-            GetUsersQuery request,
-            CancellationToken cancellationToken)
+        public async Task<List<GetUsersResponse>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
             var users = await _userRepository.GetAllAsync(cancellationToken);
 
             return users.Select(u => new GetUsersResponse
             {
                 Id = u.Id,
-                Name = u.Name,
+                FirstName = u.FirstName,
+                LastName=u.LastName,
                 Email = u.Email
             }).ToList();
         }

@@ -9,6 +9,12 @@ namespace TaskFlow.Modules.Users.Application.Features.DeleteUser
     public class DeleteUserHandler:IRequestHandler<DeleteUserCommand,bool>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IUsersUnitOfWork _unitOfWork;
+        public DeleteUserHandler(IUserRepository userRepository, IUsersUnitOfWork unitOfWork)
+        {
+            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
+        }
         public async Task<bool> Handle(DeleteUserCommand request, CancellationToken cancellationToken) 
         {
             //Fetch User
@@ -18,6 +24,10 @@ namespace TaskFlow.Modules.Users.Application.Features.DeleteUser
 
             //Delete User
             await _userRepository.DeleteAsync(user, cancellationToken);
+
+            //save 
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
 
             return true;
         }

@@ -13,7 +13,10 @@ namespace TaskFlow.BuildingBlocks.Localization
             "validation.name.required";
 
         public const string EmailRequired =
-            "validation.email.required";       
+            "validation.email.required";
+
+        public const string EmailAlreadyExists =
+            "validation.email.alreadyexists";
 
         public const string InvalidEmail =
             "validation.email.invalid";

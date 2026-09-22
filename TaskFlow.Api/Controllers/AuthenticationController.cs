@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskFlow.Modules.Users.Application.Features.Auth.Login;
+using TaskFlow.Modules.Users.Application.Features.Auth.Register;
 
 namespace TaskFlow.Api.Controllers
 {
@@ -17,10 +18,29 @@ namespace TaskFlow.Api.Controllers
         }
 
         [HttpPost("login")]
+        [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<LoginResponse>> Login(LoginCommand request) 
         {
             var result = await _mediator.Send(request);
             return Ok(result);
+        }
+
+        [HttpPost("register")]
+        [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<RegisterResponse>> Register(
+        RegisterCommand request,
+        CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(
+                request,
+                cancellationToken);
+
+            return StatusCode(
+                StatusCodes.Status201Created,
+                result);
         }
     }
 }
