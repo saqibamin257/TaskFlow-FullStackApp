@@ -45,18 +45,21 @@ namespace TaskFlow.BuildingBlocks.Security.Services
 
         private PasetoSymmetricKey GetSymmetricKey()
         {
-            var keyBytes =
-                Convert.FromBase64String(_configuration["Token:SecretKey"]);
+            var secretKey = _configuration["Token:SecretKey"];
+
+            if (string.IsNullOrWhiteSpace(secretKey))
+            {
+                throw new InvalidOperationException("Token:SecretKey configuration is missing.");
+            }
+
+            var keyBytes = Convert.FromBase64String(secretKey);
 
             if (keyBytes.Length != 32)
             {
-                throw new Exception(
-                    "Token secret key must be 32 bytes.");
+                throw new Exception("Token secret key must be 32 bytes.");
             }
 
-            return new PasetoSymmetricKey(
-                                        keyBytes,
-                                        new Version4());
+            return new PasetoSymmetricKey(keyBytes, new Version4());
         }
     }
 }

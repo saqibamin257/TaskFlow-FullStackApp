@@ -7,7 +7,7 @@ namespace TaskFlow.Modules.Users.Application.Features.GetCurrentUser
     public sealed record GetCurrentUserResponse(
         Guid Id,
         string FirstName,
-        string LastName,
+        string? LastName,
         string Email                         
     );
 }

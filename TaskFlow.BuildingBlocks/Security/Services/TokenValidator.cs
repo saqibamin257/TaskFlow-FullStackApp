@@ -73,9 +73,8 @@ namespace TaskFlow.BuildingBlocks.Security.Services
 
                 return new ClaimsPrincipal(identity);
             }
-            catch (Exception ex)
-            {
-               
+            catch (Exception)
+            {               
                 return null;
             }
         }

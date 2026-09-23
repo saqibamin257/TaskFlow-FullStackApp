@@ -38,7 +38,7 @@ namespace TaskFlow.Modules.Users.Application.Features.UpdateUser
             {
                 Id = user.Id,
                 FirstName = user.FirstName,
-                LastName=user.LastName,
+                LastName = user.LastName,
                 Email = user.Email                
             };
         }
