@@ -19,9 +19,7 @@ namespace TaskFlow.Modules.Users.Infrastructure.Security
 
             var rawToken = Convert.ToBase64String(tokenBytes);
 
-            var tokenHash = Convert.ToHexString(
-                SHA256.HashData(
-                    Encoding.UTF8.GetBytes(rawToken)));
+            var tokenHash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(rawToken)));
 
             var expiresAtUTC =
                 DateTime.UtcNow.AddHours(ExpirationHours);
@@ -30,6 +28,11 @@ namespace TaskFlow.Modules.Users.Infrastructure.Security
                 rawToken,
                 tokenHash,
                 expiresAtUTC);
+        }
+
+        public string Hash(string rawToken)
+        {
+            return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(rawToken)));
         }
     }
 }

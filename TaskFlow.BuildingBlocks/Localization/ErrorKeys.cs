@@ -7,8 +7,12 @@ namespace TaskFlow.BuildingBlocks.Localization
     public static class ErrorKeys
     {
         //user
-        public const string UserNotFound =
-           "error.user.notfound";
+        public const string UserNotFound = "error.user.notfound";
+
+        //public const string InvalidEmailVerificationToken = "error.user.email.invalidVerificationToken";
+        //public const string EmailVerificationTokenAlreadyUsed = "error.user.email.verificationTokenAlreadyUsed";
+        //public const string EmailVerificationTokenExpired = "error.user.email.verificationTokenExpired";
+
 
 
         //organization

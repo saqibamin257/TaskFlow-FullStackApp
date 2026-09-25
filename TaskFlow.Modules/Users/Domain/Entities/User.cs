@@ -27,11 +27,7 @@ namespace TaskFlow.Modules.Users.Domain.Entities
             PasswordHash = passwordHash;                      
             CreatedAtUTC = DateTime.UtcNow;
             IsActive = true;
-        }
-        public void VerifyEmail()
-        {
-            EmailVerifiedAtUTC = DateTime.UtcNow;
-        }
+        }       
         public static User Create(string firstName, string lastName, string email, string passwordHash) 
         {
             return new User(firstName,lastName, email,passwordHash);
@@ -70,12 +66,24 @@ namespace TaskFlow.Modules.Users.Domain.Entities
         {
             if (string.IsNullOrEmpty(email)) 
             {
-                throw new ValidationException(
-                   ValidationKeys.EmailRequired);
-            }
-                
+                throw new ValidationException(ValidationKeys.EmailRequired);
+            }                
             Email = email;
         }
+        public void VerifyEmail()
+        {
+            EmailVerifiedAtUTC = DateTime.UtcNow;
+        }
+
+        public void MarkEmailAsVerified() 
+        {
+            if (EmailVerifiedAtUTC.HasValue) 
+            {
+                return;
+            }
+            EmailVerifiedAtUTC = DateTime.UtcNow;
+        }
+
         internal void SetId(Guid id)
         {
             Id = id;
