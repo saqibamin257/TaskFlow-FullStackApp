@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,11 @@ namespace TaskFlow.Modules.Users.Application.Features.GetCurrentUser
             
             if (user is null) 
             {
-                throw new ValidationException(ErrorKeys.UserNotFound);
+                throw new ValidationException(
+                                                new[]
+                                                {
+                                                    new ValidationFailure("Get Current User",ErrorKeys.UserNotFound)
+                                                });               
             }
             return new GetCurrentUserResponse(user.Id,user.FirstName, user.LastName,user.Email);
         }

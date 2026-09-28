@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,10 @@ namespace TaskFlow.Modules.Organizations.Application.Features.CreateOrganization
             if (slugExists)
             {
                 throw new ValidationException(
-                    ErrorKeys.OrganizationSlugAlreadyExists);
+                                                new[]
+                                                {
+                                                    new ValidationFailure("Create Organization",ErrorKeys.OrganizationSlugAlreadyExists)
+                                                });                
             }
 
             var nameExists = await _organizationRepository.ExistsByNameAsync(request.Name, cancellationToken);
@@ -41,7 +45,10 @@ namespace TaskFlow.Modules.Organizations.Application.Features.CreateOrganization
             if (nameExists)
             {
                 throw new ValidationException(
-                    ErrorKeys.OrganizationNameAlreadyExists);
+                                                new[]
+                                                {
+                                                    new ValidationFailure("Create Organization",ErrorKeys.OrganizationNameAlreadyExists)
+                                                });                
             }
 
 

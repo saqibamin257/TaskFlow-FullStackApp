@@ -1,7 +1,10 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TaskFlow.BuildingBlocks.Localization;
 using TaskFlow.Modules.Users.Application.Abstractions;
 
 namespace TaskFlow.Modules.Users.Application.Features.DeleteUser
@@ -20,8 +23,11 @@ namespace TaskFlow.Modules.Users.Application.Features.DeleteUser
             //Fetch User
             var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
             if (user is null)
-                throw new Exception($"User with Id {request.Id} not found");
-
+                throw new ValidationException(
+                                                new[]
+                                                {
+                                                    new ValidationFailure("Delete User",ErrorKeys.UserNotFound)
+                                                });
             //Delete User
             await _userRepository.DeleteAsync(user, cancellationToken);
 

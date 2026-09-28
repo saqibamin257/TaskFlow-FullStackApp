@@ -38,7 +38,7 @@ namespace TaskFlow.Modules.Users.Application.Features.Auth.Register
                 throw new ValidationException(
                                                 new[]
                                                 {
-                                                    new ValidationFailure("Login",ErrorKeys.EmailAlreadyExists)
+                                                    new ValidationFailure("Register User",ErrorKeys.EmailAlreadyExists)
                                                 });                
             }
             var passwordHash = _passwordHasher.Hash(request.Password);

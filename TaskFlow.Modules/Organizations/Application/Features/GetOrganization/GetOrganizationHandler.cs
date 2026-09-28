@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -29,13 +30,22 @@ namespace TaskFlow.Modules.Organizations.Application.Features.GetOrganization
 
             if (organization is null)
             {
-                throw new ValidationException(ErrorKeys.OrganizationNotFound);
+                
+                throw new ValidationException(
+                                                new[]
+                                                {
+                                                    new ValidationFailure("Get Organization",ErrorKeys.OrganizationNotFound)
+                                                });
             }
 
             // Only the owner can access this endpoint (for now)
             if (organization.OwnerUserId != _currentUser.UserId)
             {
-                throw new ValidationException(ErrorKeys.OrganizationAccessDenied);
+                throw new ValidationException(
+                                                new[]
+                                                {
+                                                    new ValidationFailure("Get Organization",ErrorKeys.OrganizationAccessDenied)
+                                                });                
             }
 
             return new GetOrganizationResponse(

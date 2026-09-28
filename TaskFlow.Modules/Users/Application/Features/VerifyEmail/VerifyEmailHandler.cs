@@ -50,8 +50,7 @@ namespace TaskFlow.Modules.Users.Application.Features.VerifyEmail
                                                     new ValidationFailure(
                                                         nameof(request.Token),
                                                         ErrorKeys.EmailVerificationTokenExpired)
-                                                });
-               // throw new ValidationException(ValidationKeys.EmailVerificationTokenExpired);
+                                                });               
             }
 
             var user = await _userRepository.GetByIdAsync(verificationToken.UserId, cancellationToken);
@@ -64,8 +63,7 @@ namespace TaskFlow.Modules.Users.Application.Features.VerifyEmail
                                                     new ValidationFailure(
                                                         nameof(request.Token),
                                                         ErrorKeys.UserNotFound)
-                                                });
-               // throw new ValidationException(ValidationKeys.UserNotFound);
+                                                });               
             }
 
             user.VerifyEmail();

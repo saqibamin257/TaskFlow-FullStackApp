@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,11 @@ namespace TaskFlow.Modules.Organizations.Application.Features.DeactivateOrganiza
             var organization = await _organizationRepository.GetByIdAsync(request.Id,cancellationToken);
             if (organization is null) 
             {
-                throw new ValidationException(ErrorKeys.OrganizationNotFound);
+                throw new ValidationException(
+                                                new[]
+                                                {
+                                                    new ValidationFailure("Deactivate Organization",ErrorKeys.OrganizationNotFound)
+                                                });
             }
 
             if (organization.OwnerUserId != _currentUser.UserId)
@@ -32,8 +37,12 @@ namespace TaskFlow.Modules.Organizations.Application.Features.DeactivateOrganiza
                     ErrorKeys.OrganizationAccessDenied);
             }
             if (!organization.IsActive) 
-            {
-                throw new ValidationException(ErrorKeys.OrganizationAlreadyDeactivated);
+            {               
+                throw new ValidationException(
+                                              new[]
+                                              {
+                                                    new ValidationFailure("Deactivate Organization",ErrorKeys.OrganizationAlreadyDeactivated)
+                                              });
             }
 
             organization.DeActivate();

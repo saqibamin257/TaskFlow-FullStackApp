@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.Identity.Client;
 using System;
@@ -33,7 +34,12 @@ namespace TaskFlow.Modules.Organizations.Application.Features.UpdateOrganization
             //check current user owned this organization
             if (organization.OwnerUserId != _currentUser.UserId) 
             {
-                throw new ValidationException(ErrorKeys.OrganizationAccessDenied);
+                throw new ValidationException(
+                                                new[]
+                                                {
+                                                    new ValidationFailure("Update Organization",ErrorKeys.OrganizationAccessDenied)
+                                                });
+                
             }
 
             // check slug
@@ -42,7 +48,11 @@ namespace TaskFlow.Modules.Organizations.Application.Features.UpdateOrganization
                 var slugExists = await _organizationRepository.ExistsBySlugExcludingOrganizationAsync(request.Slug, request.Id, cancellationToken);
                 if (slugExists) 
                 {
-                    throw new ValidationException(ErrorKeys.OrganizationSlugAlreadyExists);
+                    throw new ValidationException(
+                                                new[]
+                                                {
+                                                    new ValidationFailure("Update Organization",ErrorKeys.OrganizationSlugAlreadyExists)
+                                                });                    
                 }
             }
 
@@ -52,7 +62,11 @@ namespace TaskFlow.Modules.Organizations.Application.Features.UpdateOrganization
                 var nameExists = await _organizationRepository.ExistsByNameExcludingOrganizationAsync(request.Name, request.Id, cancellationToken);
                 if (nameExists) 
                 {
-                    throw new ValidationException(ErrorKeys.OrganizationNameAlreadyExists);
+                    throw new ValidationException(
+                                                new[]
+                                                {
+                                                    new ValidationFailure("Update Organization",ErrorKeys.OrganizationNameAlreadyExists)
+                                                });         
                 }
             }
 

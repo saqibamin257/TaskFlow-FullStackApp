@@ -1,7 +1,10 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TaskFlow.BuildingBlocks.Localization;
 using TaskFlow.Modules.Users.Application.Abstractions;
 
 namespace TaskFlow.Modules.Users.Application.Features.UpdateUser
@@ -20,7 +23,11 @@ namespace TaskFlow.Modules.Users.Application.Features.UpdateUser
             //Fetch existing user
             var user = await _userRepository.GetByIdAsync(request.Id,cancellationToken);
             if (user is null)
-                throw new Exception($"User with Id {request.Id} not found");
+                throw new ValidationException(
+                                                new[]
+                                                {
+                                                    new ValidationFailure("Update User",ErrorKeys.UserNotFound)
+                                                });
 
             //Apply domain behaviour
             user.UpdateProfile(request.FirstName,request.LastName, request.Email);
