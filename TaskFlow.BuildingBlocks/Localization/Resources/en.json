@@ -3,7 +3,7 @@
   "validation.id.required": "Id is required",
   "validation.name.required": "Name is required",
   "validation.email.required": "Email is required",
-  "validation.email.alreadyexists": "Email already exists",
+
   "validation.email.invalid": "Invalid email format",
   "validation.password.required": "Password is required",
   "validation.role.required": "Role is required",
@@ -16,10 +16,10 @@
   "error.user.email.invalidVerificationToken": "Invalid verification link. Please request a new one.",
   "error.user.email.verificationTokenAlreadyUsed": "This verification link has already been used.",
   "error.user.email.verificationTokenExpired": "This verification link has expired. Please request a new one.",
+  "error.user.invalidEmailOrPassword": "Invalid Email or Password",
+  "error.email.alreadyexists": "Email already exists",
 
 
-
-  
   "error.organization.notfound": "Organization not found",
   "error.organization.slug.exists": "Organization slug already exists",
   "error.organization.name.exists": "Organization name already exists",

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,11 @@ namespace TaskFlow.Modules.Users.Application.Features.Auth.Register
             var existingUser = await _userRepository.GetByEmailAsync(email);
             if (existingUser is not null) 
             {
-                throw new ValidationException(ValidationKeys.EmailAlreadyExists);
+                throw new ValidationException(
+                                                new[]
+                                                {
+                                                    new ValidationFailure("Login",ErrorKeys.EmailAlreadyExists)
+                                                });                
             }
             var passwordHash = _passwordHasher.Hash(request.Password);
 

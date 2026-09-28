@@ -30,16 +30,15 @@ namespace TaskFlow.Modules.Users.Application.Features.VerifyEmail
 
             if (verificationToken is null)
             {
-                throw new ValidationException(ValidationKeys.InvalidEmailVerificationToken);
+                throw new ValidationException(ErrorKeys.InvalidEmailVerificationToken);
             }
 
             if (verificationToken.IsUsed())
-            {
-                //throw new ValidationException(ValidationKeys.EmailVerificationTokenAlreadyUsed);
+            {                
                 throw new ValidationException(
                                                 new[]
                                                 {
-                                                    new ValidationFailure(nameof(request.Token),ValidationKeys.EmailVerificationTokenAlreadyUsed)
+                                                    new ValidationFailure(nameof(request.Token),ErrorKeys.EmailVerificationTokenAlreadyUsed)
                                                 });
             }
 
@@ -50,7 +49,7 @@ namespace TaskFlow.Modules.Users.Application.Features.VerifyEmail
                                                 {
                                                     new ValidationFailure(
                                                         nameof(request.Token),
-                                                        ValidationKeys.EmailVerificationTokenExpired)
+                                                        ErrorKeys.EmailVerificationTokenExpired)
                                                 });
                // throw new ValidationException(ValidationKeys.EmailVerificationTokenExpired);
             }
@@ -64,7 +63,7 @@ namespace TaskFlow.Modules.Users.Application.Features.VerifyEmail
                                                 {
                                                     new ValidationFailure(
                                                         nameof(request.Token),
-                                                        ValidationKeys.UserNotFound)
+                                                        ErrorKeys.UserNotFound)
                                                 });
                // throw new ValidationException(ValidationKeys.UserNotFound);
             }

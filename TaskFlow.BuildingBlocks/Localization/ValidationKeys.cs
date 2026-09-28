@@ -13,10 +13,7 @@ namespace TaskFlow.BuildingBlocks.Localization
             "validation.name.required";
 
         public const string EmailRequired =
-            "validation.email.required";
-
-        public const string EmailAlreadyExists =
-            "validation.email.alreadyexists";
+            "validation.email.required";        
 
         public const string InvalidEmail =
             "validation.email.invalid";
@@ -35,13 +32,5 @@ namespace TaskFlow.BuildingBlocks.Localization
 
         public const string OrganizationSlugRequired =
             "validation.organization.slug.required";
-
-        public const string UserNotFound = "error.user.notfound";
-        public const string InvalidEmailVerificationToken = "error.user.email.invalidVerificationToken";
-        public const string EmailVerificationTokenAlreadyUsed = "error.user.email.verificationTokenAlreadyUsed";
-        public const string EmailVerificationTokenExpired = "error.user.email.verificationTokenExpired";
-
-
-
     }
 }

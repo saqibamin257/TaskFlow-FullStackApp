@@ -124,9 +124,7 @@ namespace TaskFlow.BuildingBlocks.Presentation.Middleware
 
         private static async Task WriteResponseAsync(HttpContext context,object response)
         {
-            await context.Response.WriteAsJsonAsync(response);
-            //await context.Response.WriteAsync(
-            //    JsonSerializer.Serialize(response));
+            await context.Response.WriteAsJsonAsync(response);            
         }
     }
 }

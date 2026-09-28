@@ -8,12 +8,15 @@ namespace TaskFlow.BuildingBlocks.Localization
     {
         //user
         public const string UserNotFound = "error.user.notfound";
+        public const string InvalidEmailVerificationToken = "error.user.email.invalidVerificationToken";
+        public const string EmailVerificationTokenAlreadyUsed = "error.user.email.verificationTokenAlreadyUsed";
+        public const string EmailVerificationTokenExpired = "error.user.email.verificationTokenExpired";
+        public const string EmailAlreadyExists = "error.email.alreadyexists";
+        
+        //Login
 
-        //public const string InvalidEmailVerificationToken = "error.user.email.invalidVerificationToken";
-        //public const string EmailVerificationTokenAlreadyUsed = "error.user.email.verificationTokenAlreadyUsed";
-        //public const string EmailVerificationTokenExpired = "error.user.email.verificationTokenExpired";
-
-
+        public const string InvalidEmailOrPassword =
+            "error.user.invalidEmailOrPassword";
 
         //organization
         public const string OrganizationNotFound =
