@@ -37,10 +37,7 @@ namespace TaskFlow.BuildingBlocks.Security.Services
             .Audience(_configuration["Token:Audience"])
             .Subject(user.UserId.ToString())
             .Expiration(DateTime.UtcNow.AddMinutes( Convert.ToDouble(_configuration["Token:ExpiryMinutes"])))
-            .AddClaim("email", user.Email)
-            .AddClaim("role", user.Role)
-            .AddClaim("tenantId",
-                user.TenantId.ToString())
+            .AddClaim("email", user.Email)                   
             .Encode();
 
             return token;
@@ -48,18 +45,21 @@ namespace TaskFlow.BuildingBlocks.Security.Services
 
         private PasetoSymmetricKey GetSymmetricKey()
         {
-            var keyBytes =
-                Convert.FromBase64String(_configuration["Token:SecretKey"]);
+            var secretKey = _configuration["Token:SecretKey"];
+
+            if (string.IsNullOrWhiteSpace(secretKey))
+            {
+                throw new InvalidOperationException("Token:SecretKey configuration is missing.");
+            }
+
+            var keyBytes = Convert.FromBase64String(secretKey);
 
             if (keyBytes.Length != 32)
             {
-                throw new Exception(
-                    "Token secret key must be 32 bytes.");
+                throw new Exception("Token secret key must be 32 bytes.");
             }
 
-            return new PasetoSymmetricKey(
-                                        keyBytes,
-                                        new Version4());
+            return new PasetoSymmetricKey(keyBytes, new Version4());
         }
     }
 }

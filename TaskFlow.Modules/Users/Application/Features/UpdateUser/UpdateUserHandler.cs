@@ -9,9 +9,11 @@ namespace TaskFlow.Modules.Users.Application.Features.UpdateUser
     public class UpdateUserHandler: IRequestHandler<UpdateUserCommand,UpdateUserResponse>
     {
         private readonly IUserRepository _userRepository;
-        public UpdateUserHandler(IUserRepository userRepository) 
+        private readonly IUsersUnitOfWork _unitOfWork;
+        public UpdateUserHandler(IUserRepository userRepository,IUsersUnitOfWork unitOfWork) 
         {
             _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<UpdateUserResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken) 
         {
@@ -21,18 +23,23 @@ namespace TaskFlow.Modules.Users.Application.Features.UpdateUser
                 throw new Exception($"User with Id {request.Id} not found");
 
             //Apply domain behaviour
-            user.UpdateProfile(request.Name, request.Email);
+            user.UpdateProfile(request.FirstName,request.LastName, request.Email);
 
             //Persist Changes
             await _userRepository.UpdateAsync(user, cancellationToken);
+
+            //save 
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+
 
             //Return response
             return new UpdateUserResponse
             {
                 Id = user.Id,
-                Name = user.Name,
-                Email = user.Email,
-                Role = user.Role
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email                
             };
         }
     }

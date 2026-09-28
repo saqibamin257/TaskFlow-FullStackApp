@@ -12,8 +12,7 @@ Accept: application/json
 {
   "name": "Muhammad Hassan Amin",
   "email": "has@gmail.com",
-  "password": "5555",
-  "role": "Admin"
+  "password": "5555"  
 }
 
 ### Update User

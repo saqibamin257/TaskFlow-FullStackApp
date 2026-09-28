@@ -1,21 +1,24 @@
 {
-  //validations
+
   "validation.id.required": "آئی ڈی فراہم کرنا ضروری ہے",
   "validation.name.required": "نام لازمی ہے",
   "validation.email.required": "ای میل لازمی ہے",
   "validation.email.invalid": "ای میل درست نہیں",
+
   "validation.password.required": "پاس ورڈ لازمی ہے",
   "validation.role.required": "کردار لازمی ہے",
   "validation.tenant.required": "ٹیننٹ لازمی ہے",
   "validation.organization.name.required": "ادارے کا نام لازمی ہے",
   "validation.organization.slug.required": "ادارے کا منفرد نام لازمی ہے",
 
-  //-------------------------  errors-----------------------------------//
 
-  //user
   "error.user.notfound": "درخواست کردہ صارف موجود نہیں ہے",
+  "error.user.email.invalidVerificationToken": "تصدیقی لنک درست نہیں ہے۔ براہ کرم نیا لنک حاصل کریں۔",
+  "error.user.email.verificationTokenAlreadyUsed": "یہ تصدیقی لنک پہلے ہی استعمال ہو چکا ہے۔",
+  "error.user.email.verificationTokenExpired": "یہ تصدیقی لنک ختم ہو چکا ہے۔ براہ کرم نیا لنک حاصل کریں۔",
+  "error.email.alreadyexists": "یہ ای میل پہلے ہی رجسٹرڈ ہے",
 
-  //organization
+
   "error.organization.notfound": "ادارہ موجود نہیں",
   "error.organization.slug.exists": "ادارے کا سلاگ پہلے سے موجود ہے",
   "error.organization.name.exists": "ادارے کا نام پہلے سے موجود ہے",
@@ -23,9 +26,9 @@
   "error.organization.already.deactivated": "یہ تنظیم پہلے ہی غیر فعال کی جا چکی ہے۔",
   "internal.server.error": "ایک غیر متوقع خرابی پیش آگئی۔",
 
-  //access
+
   "error.unauthorized": "رسائی کی اجازت نہیں",
 
-  //general
+
   "error.general.id.mismatch": "درخواست میں دیا گیا شناختی نمبر درست نہیں ہے۔"
 }

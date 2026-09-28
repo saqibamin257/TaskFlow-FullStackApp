@@ -13,10 +13,13 @@ namespace TaskFlow.Modules.Users.Application.Features.CreateUser
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
-        public CreateUserHandler(IUserRepository userRepository, IPasswordHasher passwordHasher) 
+        private readonly IUsersUnitOfWork _unitOfWork;
+        public CreateUserHandler(IUserRepository userRepository, IPasswordHasher passwordHasher, IUsersUnitOfWork unitOfWork) 
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
+            _unitOfWork = unitOfWork;
+
         }
         public async Task<CreateUserResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken) 
         {            
@@ -24,23 +27,26 @@ namespace TaskFlow.Modules.Users.Application.Features.CreateUser
 
             //Domain Creation
             var user = User.Create(
-                request.Name,
+                request.FirstName,
+                request.LastName,
                 request.Email,
-                passwordHash,
-                request.Role,
-                request.TenantId
+                passwordHash               
                 );
 
-            //save
+            //add
             await _userRepository.AddAsync(user, cancellationToken);
+
+            //save 
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
 
             //Response
             return new CreateUserResponse
             {
                 Id = user.Id,
-                Name = user.Name,
-                Email = user.Email,
-                Role = user.Role,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,                
                 IsActive = user.IsActive,
                 CreatedAtUTC = user.CreatedAtUTC
             };

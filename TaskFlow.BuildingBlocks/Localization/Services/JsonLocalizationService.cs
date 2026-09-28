@@ -20,6 +20,7 @@ namespace TaskFlow.BuildingBlocks.Localization.Services
 
         public string GetString(string key)
         {
+
             var language =
                 _httpContextAccessor.HttpContext?
                     .Request.Headers["Accept-Language"]
@@ -47,9 +48,7 @@ namespace TaskFlow.BuildingBlocks.Localization.Services
 
             var json = File.ReadAllText(filePath);
 
-            var translations =
-                JsonSerializer.Deserialize<
-                    Dictionary<string, string>>(json);
+            var translations = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
 
             if (translations is null)
             {

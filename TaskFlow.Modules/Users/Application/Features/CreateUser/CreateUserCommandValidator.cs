@@ -11,7 +11,7 @@ namespace TaskFlow.Modules.Users.Application.Features.CreateUser
     {
         public CreateUserCommandValidator()
         {
-            RuleFor(x => x.Name)
+            RuleFor(x => x.FirstName)
                 .NotEmpty()
                 .WithMessage(ValidationKeys.NameRequired)
                 .MaximumLength(200);
@@ -26,14 +26,6 @@ namespace TaskFlow.Modules.Users.Application.Features.CreateUser
                 .NotEmpty()
                 .WithMessage(ValidationKeys.PasswordRequired)
                 .MinimumLength(6);
-
-            RuleFor(x => x.Role)
-                .NotEmpty()
-                .WithMessage(ValidationKeys.RoleRequired);
-
-            RuleFor(x => x.TenantId)
-                .NotEmpty()
-                .WithMessage(ValidationKeys.TenantRequired);
         }
     }
 }

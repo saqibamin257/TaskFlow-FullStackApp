@@ -1,7 +1,10 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TaskFlow.BuildingBlocks.Localization;
 using TaskFlow.BuildingBlocks.Models;
 using TaskFlow.BuildingBlocks.Security.Abstraction;
 using TaskFlow.Modules.Users.Application.Abstractions;
@@ -26,20 +29,27 @@ namespace TaskFlow.Modules.Users.Application.Features.Auth.Login
         {
             var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
             if (user is null)
-                throw new Exception("Invalid Email or Password");
+                throw new ValidationException(
+                                                new[]
+                                                {
+                                                    new ValidationFailure("Login",ErrorKeys.InvalidEmailOrPassword)
+                                                });
+            
 
             var isPasswordValid = _passwordHasher.Verify(request.Password, user.PasswordHash);
 
             if (!isPasswordValid)
-                throw new Exception("Invalid Email or Password");
+                throw new ValidationException(
+                                                new[]
+                                                {
+                                                    new ValidationFailure("Login",ErrorKeys.InvalidEmailOrPassword)
+                                                });
 
             var authenticatedUser =
                 new AuthenticatedUser
                 {
                     UserId = user.Id,
-                    Email = user.Email,
-                    Role = user.Role,
-                    TenantId = user.TenantId
+                    Email = user.Email                               
                 };
             var accessToken = _tokenProvider.Generate(authenticatedUser);
             return new LoginResponse
